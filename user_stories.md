@@ -163,3 +163,77 @@ As a Patient, I want to view my upcoming appointments so that I can prepare acco
 **Story Points:** 13
 **Notes:**
 - N/A.
+
+
+## Doctor User Stories
+
+### Doctor User Story 1
+
+**Title:**
+As an Doctor, I want to Log into the portal to manage my appointments.
+
+**Acceptance Criteria:**
+1. Display the appointments using Agenda format, including the name and contacs of the patient.
+
+**Priority:** High
+**Story Points:** 5
+**Notes:**
+- N/A.
+
+
+### Doctor User Story 2
+
+**Title:**
+As an Doctor, I want to Log out of the portal to protect my data.
+
+**Acceptance Criteria:**
+1. After exiting the portal, display confirmation message that the log out has been accomplished.
+
+**Priority:** High
+**Story Points:** 3
+**Notes:**
+- Verify that data are effectively protected after log out.
+
+
+### Doctor User Story 3
+
+**Title:**
+As an Doctor, I want to View my appointment calendar to stay organized.
+
+**Acceptance Criteria:**
+1. Send a notification email when there are new appointments.
+2. In the notification email, include the link to updated calendar.
+
+**Priority:** High
+**Story Points:** 8
+**Notes:**
+- N/A.
+
+
+### Doctor User Story 4
+
+**Title:**
+As an Doctor, I want to Mark my unavailability to show patients only the available slots.
+
+**Acceptance Criteria:**
+1. The unavilable time slots should not be offered to Patients to book appointments.
+
+**Priority:** High
+**Story Points:** 13
+**Notes:**
+- use clear color coding to highilight unavailable slots.
+
+
+### Doctor User Story 5
+
+**Title:**
+As an Doctor, I want to Update my profile with specialization and contact information so that patients have up-to-date information.
+
+**Acceptance Criteria:**
+1. Create a dedicated section where the profile can be updated.
+2. Once the profile is updated it should be visible to all patients.
+
+**Priority:** Low
+**Story Points:** 3
+**Notes:**
+- N/A.

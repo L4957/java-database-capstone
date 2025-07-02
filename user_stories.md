@@ -34,7 +34,7 @@ As an Admin, I want to log into the portal with my username and password to mana
 ### Admin User Story 2
 
 **Title:**
-As an Admin, I want to log out of the portal to protect system access
+As an Admin, I want to log out of the portal to protect system access.
 
 **Acceptance Criteria:**
 1. After exiting, make sure that admin sections are no more accessible
@@ -44,3 +44,49 @@ As an Admin, I want to log out of the portal to protect system access
 **Story Points:** 5
 **Notes:**
 - N/A
+
+
+### Admin User Story 3
+
+**Title:**
+As an Admin, I want to add doctors to the portal.
+
+**Acceptance Criteria:**
+1. Demonstrate that after adding a new doctor profile via the User Interface, the item is also added in the MySQL database for persistance.
+2. Add a confirmation message of the added doctor.
+
+**Priority:** Medium
+**Story Points:** 8
+**Notes:**
+- Make sure that the doctor schedule can be inserted.
+
+
+### Admin User Story 4
+
+**Title:**
+As an Admin, I want to delete doctor's profile from the portal.
+
+**Acceptance Criteria:**
+1. Demonstrate that after deleting the doctor profile via the User Interface, the item is also deleted in the MySQL database.
+2. Add a confirmation message of the deleted doctor.
+
+**Priority:** Medium
+**Story Points:** 8
+**Notes:**
+- N/A.
+
+
+### Admin User Story 5
+
+**Title:**
+As an Admin, I want to run a stored procedure in MySQL CLI to get the number of appointments per month and track usage statistics.
+
+**Acceptance Criteria:**
+1. Display the calculated statistics in a dashboard.
+2. Allow comparison of statistics across different months (current vs previous month and current vs previous year).
+
+**Priority:** Medium
+**Story Points:** 13
+**Notes:**
+- Use CSS for style so that it is flexible to change in style we may want to apply (like Christmas style in December).
+

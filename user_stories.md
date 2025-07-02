@@ -90,3 +90,76 @@ As an Admin, I want to run a stored procedure in MySQL CLI to get the number of 
 **Notes:**
 - Use CSS for style so that it is flexible to change in style we may want to apply (like Christmas style in December).
 
+
+## Patient User Stories
+
+### Partient User Story 1
+
+**Title:**
+As a Patient, I want to view a list of doctors without logging in to explore options before registering.
+
+**Acceptance Criteria:**
+1. Allow the selection of doctors based on their specialization.
+2. Display the CV and expertise of the  selected doctor.
+
+**Priority:** High
+**Story Points:** 5
+**Notes:**
+- Allow possibility to include doctor picture in the profile.
+
+
+### Partient User Story 2
+
+**Title:**
+As a Patient, I want to sign up using email and password to book appointments.
+
+**Acceptance Criteria:**
+1. Receive a confirmation message of the access to the site.
+
+**Priority:** Medium
+**Story Points:** 3
+**Notes:**
+- N/A.
+
+
+### Partient User Story 3
+
+**Title:**
+As a Patient, I want to log into the portal to manage your bookings.
+
+**Acceptance Criteria:**
+1. Display all my bookings when logging into the portal.
+
+**Priority:** Medium
+**Story Points:** 3
+**Notes:**
+- N/A.
+
+
+### Partient User Story 4
+
+**Title:**
+As a Patient, I want to log in and book an hour-long appointment to consult with a doctor.
+
+**Acceptance Criteria:**
+1. Allow to visualize the Doctor's available slots and to book the preferred one.
+
+**Priority:** Medium
+**Story Points:** 8
+**Notes:**
+- N/A.
+
+
+### Partient User Story 5
+
+**Title:**
+As a Patient, I want to view my upcoming appointments so that I can prepare accordingly.
+
+**Acceptance Criteria:**
+1. Receive an email one week, three days and the day before the appointment.
+2. Include in the email if there are particular documents to bring to the appointment.
+
+**Priority:** Low
+**Story Points:** 13
+**Notes:**
+- N/A.

@@ -1,14 +1,45 @@
 # Designing the Database
 
-## MySQL database
+## MySQL Database Design
 
 Tables and columns:
-1. Patients (id, name, email, mobile, date of birth, address)
-2. Doctors (id, name, email, mobile, date of birth, address)
-3. Appointments (id, Doctor, Patient, Time-slot, Room)
-4. Admin (id, name, email, mobile, date of birth)
+1. patients (id, name, email, mobile, date_of_birth, address)
+2. doctors (id, name, email, mobile, date_of_birth, address)
+3. appointments (id, Doctor, Patient, Appointment_time, Room)
+4. admin (id, name, email, mobile, date of birth)
 
-## MongoDB database
+### Table: patients
+- id: INT, Primary Key, Auto Increment
+- name: varchar(255), Not Null
+- email: varchar(255), Not Null
+- mobile: varchar(15), Not Null
+- date_of_birth: DATETIME, Not Null
+- address: varchar(255), Not Null
+
+### Table: doctors
+- id: INT, Primary Key, Auto Increment
+- name: varchar(255), Not Null
+- email: varchar(255), Not Null
+- mobile: varchar(15), Not Null
+- date_of_birth: DATETIME, Not Null
+- address: varchar(255), Not Null
+
+### Table: appointments
+- id: INT, Primary Key, Auto Increment
+- doctor_id: INT, Foreign Key -> doctors(id)
+- patient_id: INT, FOreign Key -> patients(id)
+- appointment_time: DATETIME, Not Null
+- status: INT (0 = Scheduled, 1 = Completed, 2 = Cancelled)
+
+### Table: doctors
+- id: INT, Primary Key, Auto Increment
+- name: varchar(255), Not Null
+- email: varchar(255), Not Null
+- mobile: varchar(15), Not Null
+- date_of_birth: DATETIME, Not Null
+
+
+## MongoDB Collection Design
 
 Tables and columns:
 1. Prescriptions (id, Patient, Doctor, Prescription, Comments, Date&Time)

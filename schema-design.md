@@ -44,3 +44,20 @@ Tables and columns:
 Tables and columns:
 1. Prescriptions (id, Patient, Doctor, Prescription, Comments, Date&Time)
 2. Feedback (id, Patient, Doctor, Feedback, Date&Time)
+
+### Collection: prescriptions
+
+```json
+{
+  "_id": "ObjectId('32dcba654321')",
+  "patientName": "Max Sax",
+  "appointmentId": 43,
+  "medication": "Brufen",
+  "dosage": "500mg",
+  "doctorNotes": "Take 1 if you feel pain.",
+  "refillCount": 2,
+  "pharmacy": {
+  "name": "Farmacia della Pera",
+  "location": "Piazza della Pera"
+  }
+}

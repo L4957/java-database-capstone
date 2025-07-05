@@ -80,7 +80,7 @@ public class Doctor {
 //      - The @Size(min = 6) annotation ensures that the password must be at least 6 characters long.
 //      - The @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) annotation ensures that the password is not serialized in the response (hidden from the frontend).
 
-    @NotNull(message = "Email cannot be null")
+    @NotNull(message = "Password cannot be null")
     @Size(min = 6)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -150,10 +150,6 @@ public class Doctor {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.spacialty = specialty;
     }
 
     public String getPhone() {

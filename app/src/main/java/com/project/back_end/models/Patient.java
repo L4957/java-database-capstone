@@ -1,6 +1,8 @@
 package com.project.back_end.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 
 // @Entity annotation:
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
@@ -37,7 +42,6 @@ public class Patient {
 //      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters. 
 //      - Provides validation for correct input and user experience.
 
-    @Valid
     @NotNull(message = "Name cannot be null")
     @Size(min = 3, max = 100)
     private String name;
@@ -76,7 +80,7 @@ public class Patient {
 //      - The @Pattern(regexp = "^[0-9]{10}$") annotation validates that the phone number must be exactly 10 digits long.
 
     @NotNull(message = "Phone No cannot be null")
-    @Pattern(regexp = "^[0-9]{10}$",, message = "Phone number must be 10 digits")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     private String phone;
 
 

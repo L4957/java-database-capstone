@@ -3,6 +3,8 @@ package com.project.back_end.models;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +14,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.ElementCollection;
 
 
 // @Entity annotation:
@@ -42,7 +49,6 @@ public class Doctor {
 //      - The @NotNull annotation ensures that the doctor's name is required.
 //      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters. 
 //      - Provides validation for correct input and user experience.
-    @Valid
     @NotNull(message = "Name cannot be null")
     @Size(min = 3, max = 100)
     private String name;
@@ -95,7 +101,7 @@ public class Doctor {
 //      - The @Pattern(regexp = "^[0-9]{10}$") annotation validates that the phone number must be exactly 10 digits long.
         
     @NotNull(message = "Phone No cannot be null")
-    @Pattern(regexp = "^[0-9]{10}$",, message = "Phone number must be 10 digits")
+    @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
     private String phone;
 
 // 7. 'availableTimes' field:
@@ -112,9 +118,8 @@ public class Doctor {
 // 8. Getters and Setters:
 //    - Standard getter and setter methods are provided for all fields: id, name, specialty, email, password, phone, and availableTimes.
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { 
+        return id; }
 
     public void setId(Long id) {
         this.id = id;
@@ -160,7 +165,7 @@ public class Doctor {
         this.phone = phone;
     }
 
-    public List<Sting> getAvailableTimes() {
+    public List<String> getAvailableTimes() {
         return availableTimes;
     }
 

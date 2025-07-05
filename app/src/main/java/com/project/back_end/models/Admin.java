@@ -3,13 +3,20 @@ package com.project.back_end.models;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.Valid;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 // @Entity annotation:
 //    - Marks the class as a JPA entity, which means it represents a table in the database.
@@ -36,7 +43,6 @@ public class Admin {
 //      - Used to log into the system.
 //      - @NotNull validation ensures that this field cannot be null when creating or updating an Admin.
 
-    @Valid
     @NotNull(message = "Username cannot be null")
     private String username;
 

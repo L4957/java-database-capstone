@@ -1,9 +1,15 @@
 package com.project.back_end.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 
 
 // @Document annotation:
@@ -103,26 +109,26 @@ public class Prescription {
     }
 
     public String getPatientName() {
-        return customerId;
+        return patientName;
     }
 
-    public void setPatientName(String PatientName) {
-        this.PatientName = PatientName;
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
     }
 
     public Long getAppointmentId() {
-        return getAppointmentId;
+        return appointmentId;
     }
 
-    public void setProductId(Long getAppointmentId) {
-        this.getAppointmentId = getAppointmentId;
+    public void setAppointmentId(Long appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
     public String getMedication() {
         return medication;
     }
 
-    public void setMedication(String storeId) {
+    public void setMedication(String medication) {
         this.medication = medication;
     }
 
@@ -130,7 +136,7 @@ public class Prescription {
         return dosage;
     }
 
-    public void setDosage(String storeId) {
+    public void setDosage(String dosage) {
         this.dosage = dosage;
     }
 
@@ -138,7 +144,7 @@ public class Prescription {
         return doctorNotes;
     }
 
-    public void setDoctorNotes(String storeId) {
+    public void setDoctorNotes(String doctorNotes) {
         this.doctorNotes = doctorNotes;
     }
 

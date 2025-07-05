@@ -3,8 +3,13 @@ package com.project.back_end.models;
 import java.beans.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +19,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Future;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 // @Entity annotation:
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
@@ -42,8 +56,8 @@ public class Appointment {
 //      - The @NotNull annotation ensures that an appointment must be associated with a doctor when created.
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    @JsonManagedReference
+    //@JoinColumn(name = "doctor_id")
+    //@JsonManagedReference
     @NotNull(message = "Doctor cannot be null")
     private Doctor doctor;
 
@@ -55,9 +69,9 @@ public class Appointment {
 //      - The @NotNull annotation ensures that an appointment must be associated with a patient when created.
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
-    @JsonManagedReference
-    @NotNull(message = "Patient cannot be null")
+    //@JoinColumn(name = "patient_id")
+    //@JsonManagedReference
+    @NotNull
     private Patient patient;
 
 // 4. 'appointmentTime' field:
@@ -78,8 +92,8 @@ public class Appointment {
 //        - 1 means the appointment has been completed.
 //      - The @NotNull annotation ensures that the status field is not null.
 
-    @NotNull(message = "Patient cannot be null")
-    private int status;
+    @NotNull(message = "Status cannot be null")
+    private Integer status;
     
 // 6. 'getEndTime' method:
 //    - Type: private LocalDateTime
@@ -90,7 +104,7 @@ public class Appointment {
     
     @Transient
     private LocalDateTime getEndTime() {
-        return appointmenTime + 1;
+        return appointmenTime.plusHours(1);
     }
 
 // 7. 'getAppointmentDate' method:
@@ -110,9 +124,9 @@ public class Appointment {
 //    - Description:
 //      - This method extracts only the time part from the appointmentTime field.
 //      - It returns a LocalTime object representing just the time (without the date) of the scheduled appointment.
-@Transient
-    private LocalDate getAppointmentTimeOnly() {
-       return appointmenTime.toLocalTime 
+    @Transient
+    private LocalTime getAppointmentTimeOnly() {
+       return appointmenTime.toLocalTime(); 
     }
 // 9. Constructor(s):
 //    - A no-argument constructor is implicitly provided by JPA for entity creation.
@@ -122,7 +136,7 @@ public class Appointment {
     public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmenTime, int status) {
         this.doctor = doctor;
         this.patient = patient;
-        this.appointment = appointment;
+        this.appointmenTime = appointmenTime;
         this.status = status;
     }
 // 10. Getters and Setters:

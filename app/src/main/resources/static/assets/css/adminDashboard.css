@@ -1,5 +1,91 @@
 /*this is the style sheet for the adminDashboard. */
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-size: cover; /* Ensures the image covers the entire viewport */
+    background-repeat: no-repeat; /* Prevents tiling */
+    background-attachment: fixed; /* Keeps the image fixed during scrolling */
+    font-family: 'Roboto', sans-serif;
+  }
+
+
+.wrapper {
+    display: flex; /* Enables flexbox */
+    flex-direction: column; /* Stacks children vertically */
+    gap: 10px; /* Optional: Adds spacing between items */
+    align-items: center; /* Optional: Aligns items horizontally */
+    justify-content: center; /* Optional: Aligns items vertically */
+    min-height: 100vh;
+}
+
+h2 {
+  text-align: justify;
+  font-family: "Alegreya"', "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 48px;
+  text-align: center;
+  float: center;
+  color: #003e3e;
+  margin: 30px;
+  margin-left: 60px;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.main-content {
+  margin: 0 auto;
+  background-image: url('../images/defineRole/index.png');
+  background-size: cover; /* Adjusts the image to cover the entire element */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image */
+  background-attachment: fixed; /* Keep the background fixed during scrolling */
+  flex-grow: 1
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button {
+    width: 200px;
+    height: 48px;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 12px;
+    background-color: #015c5d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+ }
+
+.button:hover {
+    background-color: #A62B1F;
+ }
+
+ .adminBtn {
+     width: 110px;
+     height: 48px;
+     border: none;
+     padding: 10px 0;
+     margin-top: 10px;
+     border-radius: 12px;
+     background-color: #f4f4f4;
+     color: #333;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+  }
+
+ .adminBtn:hover {
+     background-color: #A62B1F;
+  }
+
 /* 
 Global Reset (`*`)
 

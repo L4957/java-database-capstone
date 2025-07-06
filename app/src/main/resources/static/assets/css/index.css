@@ -1,6 +1,35 @@
 /* this is the style sheet file for index.htlm  */
+
+/*
+**Global Reset (`*`)**
+
+* Remove all default margin and padding.
+* Use `border-box` for sizing to include padding and border in element size.
+*/
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/*
+**Base (`html, body`)**
+
+* Set height to 100% for full viewport layout.
+* Use the `'Roboto'` sans-serif font for modern, clean typography.
+*/
+body {
+    background-size: cover; /* Ensures the image covers the entire viewport */
+    background-repeat: no-repeat; /* Prevents tiling */
+    background-attachment: fixed; /* Keeps the image fixed during scrolling */
+    font-family: 'Roboto', sans-serif;
+  }
+
+.wrapper {
+    display: flex; /* Enables flexbox */
+    flex-direction: column; /* Stacks children vertically */
+    gap: 10px; /* Optional: Adds spacing between items */
+    align-items: center; /* Optional: Aligns items horizontally */
+    justify-content: center; /* Optional: Aligns items vertically */
+    min-height: 100vh;
+}
 /* Titles 
 
 **Heading (`h2`)**
@@ -13,15 +42,50 @@
 
 h2 {
   text-align: justify;
+  font-family: "Alegreya"', "Roboto", sans-serif;
+  font-weight: bold;
   font-size: 48px;
   text-align: center;
-  float: left;
+  float: center;
   color: #003e3e;
   margin: 30px;
   margin-left: 60px;
   margin-top: 40px;
-  margin-bottom: 05px;
+  margin-bottom: 50px;
+  position: fixed;
+  right: 38%;
+  bottom: 60%;
 }
+
+/*
+**Main Section (`.main-content`)**
+
+* Allow the section to grow to fill space with `flex-grow: 1`.
+* Add `40px` of internal padding.
+* Center content both horizontally and vertically using `justify-content` and `align-items`.
+* Display items in a column direction.
+* Center all text.
+* Apply a full-screen background image with:
+
+  * `cover` size
+  * `center` positioning
+  * no repeat
+  * `fixed` attachment to keep image still during scroll
+*/
+
+.main-content {
+  margin: 0 auto;
+  background-image: url('../images/defineRole/index.png');
+  background-size: cover; /* Adjusts the image to cover the entire element */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image */
+  background-attachment: fixed; /* Keep the background fixed during scrolling */
+  flex-grow: 1
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 
 /* Buttons 
 
@@ -35,19 +99,74 @@ h2 {
 * On hover, change background color to bold red (`#A62B1F`).
 */
 
-.iconbutton{
-  width: 48px;
-  height: 48px;
-  border-radius: 100%;
-  background-color: #015c5d;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  right: 3%;
-  bottom: 3%;
-  cursor: pointer;
-}
+#Admin_Button {
+    width: 200px;
+    height: 48px;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 12px;
+    background-color: #015c5d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    right: 45%;
+    bottom: 50%;
+ }
+
+#Admin_Button:hover {
+    background-color: #A62B1F;
+ }
+
+ #Doctor_Button {
+     width: 200px;
+     height: 48px;
+     border: none;
+     padding: 10px 20px;
+     margin-top: 10px;
+     border-radius: 12px;
+     background-color: #015c5d;
+     color: white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+     position: fixed;
+     right: 45%;
+     bottom: 40%;
+  }
+
+  #Doctor_Button:hover {
+      background-color: #A62B1F;
+   }
+
+ #Patient_Button {
+    width: 200px;
+    height: 48px;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 12px;
+    background-color: #015c5d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    right: 45%;
+    bottom: 30%;
+  }
+
+  #Patient_Button:hover {
+        background-color: #A62B1F;
+  }
 
 /* Main Content Area */
 

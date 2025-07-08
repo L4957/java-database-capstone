@@ -1,4 +1,137 @@
 /* This is the style sheet for the doctorDashboard.html */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-size: cover; /* Ensures the image covers the entire viewport */
+    background-repeat: no-repeat; /* Prevents tiling */
+    background-attachment: fixed; /* Keeps the image fixed during scrolling */
+    font-family: 'Roboto', sans-serif;
+  }
+
+
+.wrapper {
+    display: flex; /* Enables flexbox */
+    flex-direction: column; /* Stacks children vertically */
+    gap: 10px; /* Optional: Adds spacing between items */
+    align-items: center; /* Optional: Aligns items horizontally */
+    justify-content: center; /* Optional: Aligns items vertically */
+    min-height: 100vh;
+}
+
+h2 {
+  text-align: justify;
+  font-family: "Alegreya"', "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 48px;
+  text-align: center;
+  float: center;
+  color: #003e3e;
+  margin: 30px;
+  margin-left: 60px;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.main-content {
+  margin: 0 auto;
+  background-image: url('../images/defineRole/index.png');
+  background-size: cover; /* Adjusts the image to cover the entire element */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image */
+  background-attachment: fixed; /* Keep the background fixed during scrolling */
+  flex-grow: 1
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button {
+    width: 200px;
+    height: 48px;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 12px;
+    background-color: #015c5d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+ }
+
+.button:hover {
+    background-color: #A62B1F;
+ }
+
+.table-header {
+  font-size: 24px;
+  color: #015c5d; 
+  margin-bottom: 30px;
+  margin-right: 0px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 20px;
+}
+
+thead {
+  background-color: #33333310;
+  color: #fff;
+}
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Apply background color to odd rows */
+tr:nth-child(odd) {
+  background-color: #f9f9f959;
+}
+
+/* Apply background color to even rows */
+tr:nth-child(even) {
+  background-color: #ffffffc0;
+}
+
+.prescription-btn {
+
+}
+
+.noPatientRecord {
+  font-style: italic;
+    
+}
+
+.today-btn {
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #015c5d;
+}
+
+.date-picker {
+  height: 30px;
+  padding: 10px;
+  margin-left: 10px;
+  margin-top: 13px;
+  border-radius: 10px;
+  
+}
+
+
 /* 
 **Table Header (`.table-header`)**
 

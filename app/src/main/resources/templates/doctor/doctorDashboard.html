@@ -1,4 +1,52 @@
 <!-- doctorDashboard.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Dashboard</title>
+        <link rel="icon" href="../assets/images/logo/Logo.png">
+        <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/doctorDashboard.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+        <script th:src="@{/js/render.js}" defer></script>
+        <script th:src="@{/js/util.js}" defer></script>
+        <script th:src="@{/js/components/header.js}" defer></script>
+        <script th:src="@{/js/components/footer.js}" defer></script>
+        <script th:src="@{/js/components/doctorDashboard.js}" defer></script>
+        <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}" />
+    </head>
+
+    <body onload="renderContent()">
+        <div class="container">
+            <div class="wrapper"> 
+                <div id="header">Add Doctor</div>
+                <main class="main-content"> 
+                    <input type="text" id="searchBar" class="searchBar" placeholder="Search Bar for custom output" />
+                    <button id="todayButton" onclick="">Today's Appointments</button>
+                    <form>
+                        <label for="date">Select a date:</label>
+                        <input type="date" id="datePicker" name="date">
+                        <button type="submit">Submit</button>
+                    </form>
+                    <div id="content"></div>
+                    
+                </main>
+                <div id="footer"></div>
+             
+                <table id="patientTable">
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Name</th>
+                        <th>Phone No.</th>
+                        <th>Email</th>
+                        <th>Prescription</th>
+                    </tr>
+                    <tbody id="patientTableBody"></tbody>
+                </table>
+            </div>
+        </div>  
+    </body>    
+</html>         
 
 <!-- 
 Step-by-Step Explanation of `doctorDashboard.html`

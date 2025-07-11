@@ -1,3 +1,75 @@
+// Import the openModal function to handle showing login popups/modals
+import { openModal } from "../components/modals.js";
+// Import the base API URL from the config file
+import { API_BASE_URL } from "../config/config.js";
+
+// Define constants for the admin and doctor login API endpoints using the base URL
+const ADMIN_API = API_BASE_URL + '/admin';
+const DOCTOR_API = API_BASE_URL + '/doctor/login';
+
+window.onload = function () {
+    const adminBtn = document.getElementById('adminLogin');
+ if (adminBtn) {
+  adminBtn.addEventListener('click', () => {
+    openModal('adminLogin');
+  });
+    }     
+
+window.onload = function () {
+    const doctorBtn = document.getElementById('doctorLogin');
+if (doctorBtn) {
+    doctorBtn.addEventListener('click', () => {
+    openModal('doctorLogin');
+});
+
+// Define a function named adminLoginHandler on the global window object
+// This function will be triggered when the admin submits their login credentials
+export async function adminLoginHandler(username, password) {
+  try {
+    const admin = { username, password };
+    fetch(YOUR_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.message);
+    }
+    return { success: response.ok, message: result.message }
+  }
+  catch (error) {
+        console.error("Error :: adminLoginHandler :: ", error)
+        return { success: false, message: error.message }
+  }
+}
+
+// Define a function named doctorLoginHandler on the global window object
+// This function will be triggered when a doctor submits their login credentials
+export async function doctorLoginHandler(username, password) {
+  try {
+        const doctor = { username, password };
+        fetch(YOUR_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.message);
+        }
+        return { success: response.ok, message: result.message }
+    }
+  catch (error) {
+            console.error("Error :: doctorLoginHandler :: ", error)
+            return { success: false, message: error.message }
+    }
+  }
+
+<script type="module" src="js/services/index.js" defer></script>
+
+}     
+
 /*
   Import the openModal function to handle showing login popups/modals
   Import the base API URL from the config file

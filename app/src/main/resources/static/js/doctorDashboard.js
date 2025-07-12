@@ -1,3 +1,36 @@
+// doctorDashboard.js
+
+// Import getAllAppointments to fetch appointments from the backend
+// Import createPatientRow to generate a table row for each patient appointment
+import { getAllAppointments } from './services/appointmentRecordService.js';
+import { createPatientRow } from './components/patientRows.js';
+
+// Get the table body where patient rows will be added
+// Initialize selectedDate with today's date in 'YYYY-MM-DD' format
+// Get the saved token from localStorage (used for authenticated API calls)
+// Initialize patientName to null (used for filtering by name)
+
+const tableBody = document.getElementById("patientTableBody");
+const token = localStorage.getItem("token");
+
+var selectedDate = new Date();
+console.log(selectedDate);
+
+let patientName = null;
+
+document.getElementById("searchBar").addEventListener("change", patientName);
+
+async function patientName() {
+    const searchBarValue = document.getElementById("searchBar").value.trim();
+    
+    const patientName = searchBarValue || null;
+    return patientName;
+  }
+
+loadAppointments();
+
+// LM:  points 6,7,8 to be completed
+
 /*
   Import getAllAppointments to fetch appointments from the backend
   Import createPatientRow to generate a table row for each patient appointment

@@ -11,7 +11,7 @@ document.getElementById('addDocBtn').addEventListener('click', () => {
     loadDoctorCards();
 });
 
-function loadDoctorCards() {
+function loadDoctorCards() {getDoctors()
     .then(response => {
         const doctors = response.doctors;
         const contentDiv = document.getElementById("content");
@@ -49,7 +49,8 @@ function filterDoctorsOnChange() {
     const specialty = filterSpecialty.length > 0 ? filterSpecialty : null;
   
     filterDoctors(name, time, specialty)
-      .then(response => {
+      getDoctors()  
+        .then(response => {
         const doctors = response.doctors;
         const contentDiv = document.getElementById("content");
         contentDiv.innerHTML = "";
@@ -71,7 +72,8 @@ function filterDoctorsOnChange() {
       });
   }
   
-  function renderDoctorCards(doctors) {
+function renderDoctorCards(doctors) {
+  getDoctors()
     .then(response => {
         const contentDiv = document.getElementById("content");
         contentDiv.innerHTML = "";

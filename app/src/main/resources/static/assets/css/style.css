@@ -4,13 +4,19 @@
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: left;
+    background: none repeat scroll;
     background-color: #f4f4f4;
     color: #333;
     padding: 10px 20px;
     border-bottom: 2px solid #ccc;
     flex-wrap: wrap;
     min-height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 50px;
   }
   
   /* Logo section with image + title */
@@ -82,11 +88,16 @@
   }
 /* Footer Section */
 .footer {
+    background: none repeat scroll;
+    position: fixed;
     background-color: #f4f4f4;
     color: #fff;
-    padding: 40px 20px;
+    padding: 10px 20px;
     border-top: 2px solid #f4f4f4;
-    
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
   }
   
   .footer-container {

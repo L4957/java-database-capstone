@@ -1,4 +1,16 @@
 // header.js
+
+header.innerHTML = `
+           <header class="header">
+             <div class="logo-section">
+               <img src="../assets/images/logo/logo.png" alt="Hospital CRM Logo" class="logo-img">
+               <span class="logo-title">Hospital CMS</span>
+             </div>
+           </header>
+           `;
+
+
+/*
 // 1. Define the `renderHeader` Function
 export function renderHeader(userRole, token) {
 
@@ -67,8 +79,10 @@ export function renderHeader(userRole, token) {
 
 
 headerDiv.innerHTML = headerContent;
-attachHeaderButtonListeners();}
+attachHeaderButtonListeners();
+}
 
+*/
 
 /*
   Step-by-Step Explanation of Header Section Rendering

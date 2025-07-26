@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 //    - Annotate the class with `@Controller` to indicate that it serves as an MVC controller returning view names (not JSON).
 //    - This class handles routing to admin and doctor dashboard pages based on token validation.
 
-@Controller
+// @Controller
 public class DashboardController {
 
-
+/* 
 // 2. Autowire the Shared Service:
 //    - Inject the common `Service` class, which provides the token validation logic used to authorize access to dashboards.
 
@@ -48,4 +48,6 @@ public class DashboardController {
     public String doctorDashboard() {
         return "doctor/doctorDashboard/{token}";
     }
+
+    */
 }

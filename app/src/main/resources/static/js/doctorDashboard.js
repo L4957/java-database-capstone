@@ -27,7 +27,85 @@ async function patientName() {
     return patientName;
   }
 
+// Initialize selectedDate variable globally or within your module
+let selectedDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+// Function to load appointments - assumed to be defined elsewhere
+// async function loadAppointments() { ... }
+
+// 5.1. Bind event listener to "Today's Appointments" button
+document.getElementById('todayButton').addEventListener('click', () => {
+  // Reset selectedDate to today
+  selectedDate = new Date().toISOString().split('T')[0];
+  
+  // Update the date picker value to today's date
+  const datePicker = document.getElementById('datePicker');
+  if (datePicker) {
+    datePicker.value = selectedDate;
+  }
+  
+  // Call loadAppointments to refresh the appointment list
+  loadAppointments();
+});
+
+// 5.2. Bind event listener to date picker input
+document.getElementById('datePicker').addEventListener('change', (event) => {
+  // Update selectedDate with the picked date
+  selectedDate = event.target.value;
+  
+  // Call loadAppointments to fetch and display appointments for the selected date
+  loadAppointments();
+});
+
+async function loadAppointments() {
+  const tableBody = document.getElementById('patientTableBody');
+  const token = localStorage.getItem('token'); // Assuming token is stored here
+  const patientName = null; // Or set if you have a search/filter input
+  // Clear existing table content
+  tableBody.innerHTML = '';
+
+  try {
+    // Fetch appointments for the selected date
+    const appointments = await getAllAppointments(selectedDate, patientName, token);
+
+    if (!appointments || appointments.length === 0) {
+      // No appointments found - show message row
+      const noDataRow = document.createElement('tr');
+      noDataRow.innerHTML = `<td colspan="6" class="text-center">No Appointments found for today.</td>`;
+      tableBody.appendChild(noDataRow);
+      return;
+    }
+
+    // Appointments found - create rows for each
+    appointments.forEach(appointment => {
+      const patientRow = createPatientRow(appointment);
+      tableBody.appendChild(patientRow);
+    });
+
+  } catch (error) {
+    console.error('Error loading appointments:', error);
+    // Show error message row in the table
+    const errorRow = document.createElement('tr');
+    errorRow.innerHTML = `<td colspan="6" class="text-center text-danger">Error loading appointments. Please try again later.</td>`;
+    tableBody.appendChild(errorRow);
+  }
+}
+
 loadAppointments();
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Call renderContent() if you have this function defined
+  if (typeof renderContent === 'function') {
+    renderContent();
+  }
+
+  // Set selectedDate to today’s date in YYYY-MM-DD format
+  selectedDate = new Date().toISOString().split('T')[0];
+
+  // Call loadAppointments() to load today's appointments by default
+  loadAppointments();
+});
+
 
 // LM:  points 6,7,8 to be completed
 

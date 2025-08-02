@@ -96,10 +96,71 @@ function renderDoctorCards(doctors) {
 
   }
 
-document.getElementById("Add Doctor").addEventListener("input", openModal);
-
 // Point 7: Part to be completed
 // function adminAddDoctor()
+
+  document.getElementById("Add Doctor").addEventListener("input", openModal);
+
+  // 7.1. Open the modal when "Add Doctor" button is clicked
+  document.getElementById('addDocBtn').addEventListener('click', () => {
+    openModal('addDoctor');  // openModal imported from './components/modals.js'
+  });
+
+  // 7.2. Function to handle form submission
+  async function adminAddDoctor(event) {
+    event.preventDefault(); // prevent default form submit behavior
+
+    // 7.3. Collect form data
+    const name = document.getElementById('doctorName').value;
+    const specialty = document.getElementById('doctorSpecialty').value;
+    const email = document.getElementById('doctorEmail').value;
+    const password = document.getElementById('doctorPassword').value;
+    const mobileNo = document.getElementById('doctorMobile').value;
+
+    // Collect availability checkboxes (example)
+    const availability = [];
+    document.querySelectorAll('input[name="availability"]:checked').forEach(cb => {
+      availability.push(cb.value);
+    });
+
+    const doctor = {
+      name,
+      specialty,
+      email,
+      password,
+      mobileNo,
+      availability,
+    };
+
+    // 7.4. Verify admin token
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Admin not authenticated. Please login.');
+      return;
+    }
+
+    try {
+      // 7.5. Send POST request to save doctor
+      const response = await saveDoctor(doctor, token); // saveDoctor imported from './services/doctorServices.js'
+
+      if (response.success) {
+        alert('Doctor added successfully!');
+        closeModal('addDoctor');  // closeModal should close the modal
+        // Reload doctor list or page as needed
+        location.reload();
+      } else {
+        alert('Failed to add doctor: ' + response.message);
+      }
+    } catch (error) {
+      console.error('Error adding doctor:', error);
+      alert('An error occurred while adding the doctor.');
+    }
+    // 7.6. Bind form submit event
+    document.getElementById('addDoctorForm').addEventListener('submit', adminAddDoctor);
+}
+
+
+
 
 
 /*

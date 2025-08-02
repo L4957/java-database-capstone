@@ -4,7 +4,7 @@
 import { API_BASE_URL } from "../config/config.js";
 const DOCTOR_API = API_BASE_URL + '/doctor'
 
-/* LM: full command
+
 export async function getDoctors() {
     try {
           const response = await fetch(`${DOCTOR_API}`, {
@@ -26,8 +26,9 @@ export async function getDoctors() {
             }
       }
 }
-*/
 
+
+/*
 // LM: simplified getDoctors()
 export async function getDoctors() {
     try {
@@ -51,6 +52,7 @@ export async function getDoctors() {
       }
 }
 // end LM test
+*/
 
 
 export async function deleteDoctor(id, token) {

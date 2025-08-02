@@ -160,9 +160,6 @@ function renderDoctorCards(doctors) {
 }
 
 
-
-
-
 /*
   This script handles the admin dashboard functionality for managing doctors:
   - Loads all doctor cards

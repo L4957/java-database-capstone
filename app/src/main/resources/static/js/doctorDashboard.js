@@ -107,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// LM:  points 6,7,8 to be completed
 
 /*
   Import getAllAppointments to fetch appointments from the backend

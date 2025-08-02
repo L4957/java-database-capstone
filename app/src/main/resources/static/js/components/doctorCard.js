@@ -34,11 +34,18 @@ export function createDoctorCard(doctor) {
         removeBtn.textContent = "Delete";
 
         removeBtn.addEventListener("click", async () => {
-            // 1. Confirm deletion
-            // 2. Get token from localStorage
-            // 3. Call API to delete
-            // 4. On success: remove the card from the DOM
-          });
+            const confirmDelete = confirm(`Are you sure you want to delete Dr. ${doctor.name}?`);
+            if (!confirmDelete) return;
+
+            try {
+              const token = localStorage.getItem("token");
+              await deleteDoctor(doctor.id, token); // Call the service function with doctor ID and auth token
+              card.remove(); // Remove the card from the DOM on success
+              alert("Doctor deleted successfully.");
+            } catch (error) {
+              alert("Failed to delete doctor. Please try again.");
+            }
+        });
     }
 
     else if (role === "patient") {

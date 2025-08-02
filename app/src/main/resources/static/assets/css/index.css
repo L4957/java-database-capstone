@@ -80,7 +80,7 @@ h2 {
   background-repeat: no-repeat; /* Prevents the image from repeating */
   background-position: center; /* Centers the image */
   background-attachment: fixed; /* Keep the background fixed during scrolling */
-  flex-grow: 1
+  flex-grow: 1;
   padding: 40px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

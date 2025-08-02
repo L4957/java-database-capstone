@@ -21,7 +21,7 @@ body {
 
 h2 {
   text-align: justify;
-  font-family: "Alegreya"', "Roboto", sans-serif;
+  font-family: "Alegreya", "Roboto", sans-serif;
   font-weight: bold;
   font-size: 48px;
   text-align: center;
@@ -60,6 +60,9 @@ h2 {
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    position: fixed;
+    left: 0;
+    bottom: 500;
  }
 
 .button:hover {

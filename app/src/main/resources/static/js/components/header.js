@@ -1,5 +1,6 @@
 // header.js
 
+/*
 header.innerHTML = `
            <header class="header">
              <div class="logo-section">
@@ -8,12 +9,12 @@ header.innerHTML = `
              </div>
            </header>
            `;
+*/
 
-
-/*
 // 1. Define the `renderHeader` Function
 export function renderHeader(userRole, token) {
-
+  userRole = userRole || localStorage.getItem("userRole");  
+  token = token || localStorage.getItem("token")
     // 2. Select the Header Div
     const headerDiv = document.getElementById("header");
         
@@ -46,10 +47,10 @@ export function renderHeader(userRole, token) {
 
     
     //  6. Handle Session Expiry or Invalid Login
-         if ((role === "loggedPatient" || role === "admin" || role === "doctor") && !token) {
-    localStorage.removeItem("userRole");
-    alert("Session expired or invalid login. Please log in again.");
-    window.location.href = "/";   // or a specific login page
+    if ((role === "loggedPatient" || role === "admin" || role === "doctor") && !token) {
+      localStorage.removeItem("userRole");
+      alert("Session expired or invalid login. Please log in again.");
+      window.location.href = "/";   // or a specific login page
     return;
     }    
 
@@ -77,12 +78,64 @@ export function renderHeader(userRole, token) {
           <a href="#" onclick="logoutPatient()">Logout</a>`;
       }
 
+  headerContent += `
+      </nav>
+    </header>
+  `;
 
-headerDiv.innerHTML = headerContent;
-attachHeaderButtonListeners();
+  headerDiv.innerHTML = headerContent;
+
+  attachHeaderButtonListeners();
+
+   // Attach event listeners
+  const addDocBtn = document.getElementById("addDocBtn");
+  if (addDocBtn) {
+    addDocBtn.addEventListener("click", () => openModal("addDoctor"));
+  }
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    });
+  }
+  
+  
 }
 
-*/
+function attachHeaderButtonListeners() {
+  const addDocBtn = document.getElementById("addDocBtn");
+  if (addDocBtn) {
+    addDocBtn.addEventListener("click", () => openModal("addDoctor"));
+  }
+
+
+function logout() {
+  // Remove the token from localStorage
+  localStorage.removeItem("userRole");
+  localStorage.removeItem("token");
+  
+  // Redirect to the patient dashboard or homepage
+  window.location.href = "/"; 
+}
+
+  function logoutPatient() {
+  // Remove the token from localStorage
+  localStorage.removeItem("token");
+  
+  // Set the userRole back to "patient"
+  localStorage.setItem("userRole", "patient");
+  
+  // Redirect to the patient dashboard or homepage
+  window.location.href = "/patientDashboard"; // Change this path as needed
+}
+
+
+}
+
+
 
 /*
   Step-by-Step Explanation of Header Section Rendering

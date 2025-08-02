@@ -1,19 +1,21 @@
-<!-- patientDashboard.html -->
+<!-- patientDashboard-test.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"></html>
 
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logo.png" />
-    <title>PatientDashboard</title>
+    <title>PatientDashboard-test</title>
     <link rel="stylesheet" href="../assets/css/adminDashboard.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
     <link rel="stylesheet" href="../assets/css/patientDashboard.css">
     <script src="../js/render.js" defer></script>
     <script src="../js/util.js" defer></script>
     <script src="../js/components/header.js" defer></script>
     <script src="../js/components/footer.js" defer></script>
     <script type="module" src="../js/components/modals.js"></script>
+     <script type="module" src="../js/components/services/doctorServices.js"></script>
 </head>
 
 <!-- <body onload="renderContent()"> -->
@@ -48,19 +50,38 @@
                     </select>
                 </div>
                 <div id="content"></div>
+                <div id="form" style="display: flex;">
+                  <form id="myform" onsubmit="getDoctorsbyId(event)"
+                    style="display: flex; justify-content: center; align-items: center; 
+                    position: fixed; top: 50%;">
+                            <label for="DoctorId">Doctor Id: </label>
+                            <input type="number" name="doctorId" id="doctorId" placeholder="Doctor Id" required>
+                            <input type="submit" id="ViewDoctorButton" value="View doctors">
+                  </form>
+                    
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            <tr th:each="doctor: ${doctors}">
+                                <td th:text="${doctor.id}"></td>
+                                <td th:text="${doctor.email}"></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                  
+                    <br>
+                </div>
             </main>
             <div id="footer"></div>
         </div>
     </div>
-    <button id="Doctor_Cards" onclick="loadDoctorCards()">Doctor Cards</button>
     
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <div id="modal-body"></div>
-        </div>
-    </div>
-    <script type="module" src="../js/patientDashboard.js" defer></script>
 </body>
 
 </html>

@@ -20,18 +20,26 @@
         <main class="main-content">
             <div class="container">
                 <div class="wrapper">
-                    <div id="header">
-                        <script src="./js/components/header.js">renderHeader();</script>
-                    </div>
+                    <div id="header"></div>
                     <div id="footer"></div>                     
                 </div>
             </div>
             <h2>Select Your Role</h2>
-            <button id="Admin_Button" onclick="">Admin</button>
+            <button id="Admin_Button">Admin</button>
             <br>
-            <button id="Doctor_Button" onclick="">Doctor</button>
+            <button id="Doctor_Button" onclick="gotoDoctorPage()">Doctor</button>
+            <script>
+                function gotoDoctorPage(){
+                    document.location.href="../templates/doctor/doctorDashboard.html";
+                }
+            </script>
             <br>
-            <button id="Patient_Button" onclick="">Patient</button>
+            <button id="Patient_Button" onclick="gotoPatientPage()">Patient</button>
+            <script>
+                function gotoPatientPage(){
+                    document.location.href="./pages/patientDashboard-test.html";
+                }
+            </script>
             <br>
         </main>
         <div id="modal" class="modal">

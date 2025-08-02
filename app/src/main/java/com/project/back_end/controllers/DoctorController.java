@@ -1,7 +1,36 @@
 package com.project.back_end.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
+import com.project.back_end.repo.DoctorRepository;
+import com.project.back_end.models.Doctor;
+import com.project.back_end.services.DoctorService;
+
+@RequestMapping("/doctor")
+//@RestController
+@Controller
 public class DoctorController {
+
+    private final DoctorRepository doctorRepository;
+
+    DoctorController(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
+    }
 
 // 1. Set Up the Controller Class:
 //    - Annotate the class with `@RestController` to define it as a REST controller that serves JSON responses.
@@ -25,6 +54,32 @@ public class DoctorController {
 //    - Handles HTTP GET requests to retrieve a list of all doctors.
 //    - Returns the list within a response map under the key `"doctors"` with HTTP 200 OK status.
 
+    @GetMapping
+    public Map<String, Object> listDoctor() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("doctors",doctorRepository.findAll());
+        return map;
+    }
+
+    @GetMapping("/{id}")
+    public Map<String, Object> getDoctorbyId(@PathVariable Long id) {
+        System.out.println("result: "); 
+        System.out.println("result: "); 
+        System.out.println("result: "); 
+        Map<String, Object> map = new HashMap<>();
+        Doctor result = doctorRepository.findByid(id);
+
+        System.out.println("results: "+result);
+        map.put("doctors", result);
+        return map;
+    }
+
+    @GetMapping("/doctors")
+    public String getDoctors(Model model) {
+        List<Doctor> doctors = doctorRepository.findAll();
+        model.addAttribute("doctors", doctors);
+        return "doctors";
+    }
 
 // 5. Define the `saveDoctor` Method:
 //    - Handles HTTP POST requests to register a new doctor.

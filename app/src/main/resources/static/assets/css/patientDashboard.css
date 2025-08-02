@@ -1,5 +1,24 @@
 /* This is the style sheet for the patientDashboard.html */
-  .card-actions {
+.main-content {
+  margin: 0 auto;
+  background-image: url('../images/defineRole/index.png');
+  background-size: cover; /* Adjusts the image to cover the entire element */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image */
+  background-attachment: fixed; /* Keep the background fixed during scrolling */
+  flex-grow: 1; 
+  padding: 40px;
+  /*border-radius: 8px;*/
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+
+.card-actions {
     background-color: #244557;
     padding: 10px;
     text-align: center;
@@ -78,3 +97,42 @@
     background-color: #1c3745;
   }
   
+
+  .searchBar {
+        width: 200px;
+        height: 48px;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+        border-radius: 12px;
+        background-color: #015c5d;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        position: fixed;
+        left: 50%;
+        top: 60px; 
+    }
+
+
+  .filter-wrapper {
+      width: 200px;
+      height: 48px;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border-radius: 12px;
+      background-color: #015c5d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      position: fixed;
+      left: 50%;
+      top: 110px; 
+  }

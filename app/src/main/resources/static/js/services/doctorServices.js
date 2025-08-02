@@ -4,6 +4,7 @@
 import { API_BASE_URL } from "../config/config.js";
 const DOCTOR_API = API_BASE_URL + '/doctor'
 
+/* LM: full command
 export async function getDoctors() {
     try {
           const response = await fetch(`${DOCTOR_API}`, {
@@ -25,6 +26,32 @@ export async function getDoctors() {
             }
       }
 }
+*/
+
+// LM: simplified getDoctors()
+export async function getDoctors() {
+    try {
+          const response = await fetch(`localhost:8080/doctor`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+          });
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.message);
+          }
+          return { success: response.ok, message: result.message }
+      }
+    catch (error) {
+              console.error("Error :: getDoctors :: ", error)
+              return { 
+                success: false, 
+                message: error.message,
+                data: [] // return an empty list
+            }
+      }
+}
+// end LM test
+
 
 export async function deleteDoctor(id, token) {
     try {

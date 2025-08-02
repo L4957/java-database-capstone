@@ -1,11 +1,16 @@
 package com.project.back_end.services;
 
-public class DoctorService {
+import jakarta.transaction.Transactional;
 
 // 1. **Add @Service Annotation**:
 //    - This class should be annotated with `@Service` to indicate that it is a service layer class.
 //    - The `@Service` annotation marks this class as a Spring-managed bean for business logic.
 //    - Instruction: Add `@Service` above the class declaration.
+
+
+// @Service
+public class DoctorService {
+
 
 // 2. **Constructor Injection for Dependencies**:
 //    - The `DoctorService` class depends on `DoctorRepository`, `AppointmentRepository`, and `TokenService`.
@@ -35,10 +40,29 @@ public class DoctorService {
 //    - Fetches all doctors from the database. It is marked with `@Transactional` to ensure that the collection is properly loaded.
 //    - Instruction: Ensure that the collection is eagerly loaded, especially if dealing with lazy-loaded relationships (e.g., available times). 
 
+ //   @Transactional
+    
+
 // 8. **deleteDoctor Method**:
 //    - Deletes a doctor from the system along with all appointments associated with that doctor.
 //    - It first checks if the doctor exists. If not, it returns `-1`; otherwise, it deletes the doctor and their appointments.
 //    - Instruction: Ensure the doctor and their appointments are deleted properly, with error handling for internal issues.
+    export async function deleteDoctor(doctorId, token) {
+        const response = await fetch(`/api/doctors/${doctorId}`, {
+            method: "DELETE",
+            headers: {
+            "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Delete failed");
+        }
+
+        return response.json();
+    }
+
+
 
 // 9. **validateDoctor Method**:
 //    - Validates a doctor's login by checking if the email and password match an existing doctor record.

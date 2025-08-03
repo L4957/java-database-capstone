@@ -130,4 +130,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //    - The @Repository annotation marks this interface as a Spring Data JPA repository.
 //    - Spring Data JPA automatically implements this repository, providing the necessary CRUD functionality and custom queries defined in the interface.
 
+// LM added - Additional methods for finding conflicting appointments
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId AND a.dateTime = :dateTime AND a.id <> :appointmentId")
+        List<Appointment> findConflictingAppointments(@Param("doctorId") Long doctorId,
+                                                    @Param("dateTime") LocalDateTime dateTime,
+                                                    @Param("appointmentId") Long appointmentId);
+// end LM added
 }

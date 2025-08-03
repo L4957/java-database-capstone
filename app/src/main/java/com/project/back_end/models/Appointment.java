@@ -83,6 +83,7 @@ public class Appointment {
 
     @Future(message = "Appointment time must be in the future")    
     private LocalDateTime appointmenTime;
+    private LocalDateTime dateTime;
 
 // 5. 'status' field:
 //    - Type: private int
@@ -181,6 +182,14 @@ public class Appointment {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
 

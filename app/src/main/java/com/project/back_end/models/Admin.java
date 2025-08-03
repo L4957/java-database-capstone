@@ -78,6 +78,14 @@ public class Admin {
         this.username = username;
     } 
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 // 4. Constructor(s):
 //    - A no-argument constructor is implicitly provided, required by JPA for entity creation.
 //    - A parameterized constructor can be added as needed.

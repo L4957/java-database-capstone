@@ -85,6 +85,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByPatientId(Long patientId);
 
 
+    // LM added - findPatientIdandStatus
+    List<Appointment> findByPatientIdAndStatus(Long patientId, int status);
+
 //    - **findByPatient_IdAndStatusOrderByAppointmentTimeAsc**:
 //      - This method retrieves all appointments for a specific patient with a given status, ordered by the appointment time.
 //      - Return type: List<Appointment>
@@ -135,5 +138,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
         List<Appointment> findConflictingAppointments(@Param("doctorId") Long doctorId,
                                                     @Param("dateTime") LocalDateTime dateTime,
                                                     @Param("appointmentId") Long appointmentId);
-// end LM added
+
+
+    // findByPatientIdAndDoctorNameContainingIgnoreCase
+    @Query("SELECT a FROM Appointment a " +
+           "LEFT JOIN FETCH a.patient p " +
+           "LEFT JOIN FETCH a.doctor d " +
+           "WHERE p.id = :patientId " +
+           "AND LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%')) ")
+    List<Appointment> findByPatientIdAndDoctorNameContainingIgnoreCase(
+            @Param("patientId") Long patientId,
+            @Param("doctorName") String doctorName);
+
+    // end LM added
 }

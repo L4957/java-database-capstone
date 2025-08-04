@@ -2,6 +2,7 @@ package com.project.back_end.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,26 +73,39 @@ public class PatientService {
 //    - The appointments are then converted into `AppointmentDTO` objects for easier consumption by the API client.
 //    - This method is marked as `@Transactional` to ensure database consistency during the transaction.
 //    - Instruction: Ensure that appointment data is properly converted into DTOs and the method handles errors gracefully.
-    public ResponseEntity<Map<String, Object>> getPatientAppointment(Long id, String token) {
-        Map<String, Object> response = new HashMap<>();
-
-        // Extract email from token
-        String emailFromToken = tokenService.extractEmail(token);
-
-        // Validate patient ID matches email from token
-        Patient patient = patientRepository.findById(id).orElse(null);
-        if (patient == null || !patient.getEmail().equals(emailFromToken)) {
-            response.put("message", "Unauthorized access");
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    @Transactional
+    public List<AppointmentDTO> getPatientAppointment(Long patientId, String token) {
+        // Validate token (assuming you have a token validation method)
+        if (!tokenService.validateToken(token, "patient")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
         }
 
-        // Retrieve patient's appointments (convert to AppointmentDTO if needed)
-        List<AppointmentDTO> appointments = appointmentRepository.findByPatientId(id);
+        // Fetch appointments from repository
+        List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
 
-        response.put("appointments", appointments);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        // Convert Appointment entities to AppointmentDTOs
+        List<AppointmentDTO> appointmentDTOs = appointments.stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+
+        return appointmentDTOs;
     }
 
+    // Helper method to convert Appointment to AppointmentDTO
+    private AppointmentDTO convertToDTO(Appointment appointment) {
+        return new AppointmentDTO(
+            appointment.getId(),
+            appointment.getDoctor().getId(),
+            appointment.getDoctor().getName(),
+            appointment.getPatient().getId(),
+            appointment.getPatient().getName(),
+            appointment.getPatient().getEmail(),
+            appointment.getPatient().getPhone(),
+            appointment.getPatient().getAddress(),
+            appointment.getAppointmentTime(),
+            appointment.getStatus()
+        );
+    }
 // 5. **filterByCondition Method**:
 //    - Filters appointments for a patient based on the condition (e.g., "past" or "future").
 //    - Retrieves appointments with a specific status (0 for future, 1 for past) for the patient.
@@ -178,20 +192,17 @@ public class PatientService {
         Map<String, Object> response = new HashMap<>();
 
         // Extract email from token
-        String email = tokenService.extractEmail(token);
+        String email = tokenService.extractIdentifier(token);
         if (email == null || email.isEmpty()) {
             response.put("message", "Invalid token");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
 
-        // Retrieve patient by email
-        Optional<Patient> patientOpt = patientRepository.findByEmail(email);
-        if (!patientOpt.isPresent()) {
+        Patient patient = patientRepository.findByEmail(email);
+        if (patient == null) {
             response.put("message", "Patient not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-
-        Patient patient = patientOpt.get();
         response.put("patient", patient);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

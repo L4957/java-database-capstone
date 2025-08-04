@@ -11,6 +11,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 
 
@@ -111,8 +114,10 @@ public class Doctor {
 //      - Each time slot is represented as a string (e.g., "09:00-10:00", "10:00-11:00").
 //      - The @ElementCollection annotation ensures that the list of time slots is stored as a separate collection in the database.
 
-    // @ElementCollection
-    // private List<String> availableTimes;
+    @ElementCollection
+    @CollectionTable(name = "doctor_available_times", joinColumns = @JoinColumn(name = "doctor_id"))
+    @Column(name = "available_time")
+    private List<String> availableTimes;
 
 
 // 8. Getters and Setters:
@@ -165,7 +170,7 @@ public class Doctor {
         this.phone = phone;
     }
 
-    /* 
+    
     public List<String> getAvailableTimes() {
         return availableTimes;
     }
@@ -173,6 +178,6 @@ public class Doctor {
     public void setAvailableTimes(List<String> availableTimes) {
         this.availableTimes = availableTimes;
     }
-    */
+
 }
 

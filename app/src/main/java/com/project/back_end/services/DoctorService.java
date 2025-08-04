@@ -236,7 +236,7 @@ export async function deleteDoctor(doctorId, token) {
         return response;
     }
 
-// 11. **filterDoctorsByNameSpecilityandTime Method**:
+// 11. **filterDoctorsByNamespecialtyandTime Method**:
 //    - Filters doctors based on their name, specialty, and availability during a specific time (AM/PM).
 //    - The method fetches doctors matching the name and specialty criteria, then filters them based on their availability during the specified time period.
 //    - Instruction: Ensure proper filtering based on both the name and specialty as well as the specified time period.
@@ -306,31 +306,31 @@ export async function deleteDoctor(doctorId, token) {
         return doctor.getAvailableTimes().stream()
                 .anyMatch(time -> time.equalsIgnoreCase(amOrPm));
     }
-// 14. **filterDoctorByNameAndSpecility Method**:
+// 14. **filterDoctorByNameAndSpecialty Method**:
 //    - Filters doctors by name and specialty.
 //    - It ensures that the resulting list of doctors matches both the name (case-insensitive) and the specified specialty.
 //    - Instruction: Ensure that both name and specialty are considered when filtering doctors.
    // Filter doctors by name and specialty
-    public Map<String, Object> filterDoctorByNameAndSpecialty(String name, String specilty) {
+    public Map<String, Object> filterDoctorByNameAndSpecialty(String name, String specialty) {
         Map<String, Object> response = new HashMap<>();
 
-        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(name, specilty);
+        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(name, specialty);
 
         response.put("doctors", doctors);
         return response;
     }
 
 
-// 15. **filterDoctorByTimeAndSpecility Method**:
+// 15. **filterDoctorByTimeAndSpecialty Method**:
 //    - Filters doctors based on their specialty and availability during a specific time period (AM/PM).
 //    - Fetches doctors based on the specified specialty and filters them based on their available time slots for AM/PM.
 //    - Instruction: Ensure the time filtering is accurately applied based on the given specialty and time period (AM/PM).
     // Filter doctors by specialty and availability during AM/PM
-    public Map<String, Object> filterDoctorByTimeAndSpecialty(String specilty, String amOrPm) {
+    public Map<String, Object> filterDoctorByTimeAndSpecialty(String specialty, String amOrPm) {
         Map<String, Object> response = new HashMap<>();
 
         // Step 1: Filter by specialty (case-insensitive)
-        List<Doctor> doctorsBySpecialty = doctorRepository.findBySpecialtyIgnoreCase(specilty);
+        List<Doctor> doctorsBySpecialty = doctorRepository.findBySpecialtyIgnoreCase(specialty);
 
         // Step 2: Filter the doctors by availability time (AM/PM)
         List<Doctor> filteredDoctors = filterDoctorByTime(doctorsBySpecialty, amOrPm);
@@ -356,15 +356,15 @@ export async function deleteDoctor(doctorId, token) {
     }
     */
 
-// 16. **filterDoctorBySpecility Method**:
+// 16. **filterDoctorBySpecialty Method**:
 //    - Filters doctors based on their specialty.
 //    - This method fetches all doctors matching the specified specialty and returns them.
 //    - Instruction: Make sure the filtering logic works for case-insensitive specialty matching.
     // Method to filter doctors by specialty
-    public Map<String, Object> filterDoctorBySpecialty(String specilty) {
+    public Map<String, Object> filterDoctorBySpecialty(String specialty) {
         Map<String, Object> response = new HashMap<>();
 
-        List<Doctor> doctors = doctorRepository.findBySpecialtyIgnoreCase(specilty);
+        List<Doctor> doctors = doctorRepository.findBySpecialtyIgnoreCase(specialty);
 
         response.put("doctors", doctors);
         return response;

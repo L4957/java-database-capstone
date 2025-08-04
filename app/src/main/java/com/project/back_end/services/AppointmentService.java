@@ -175,7 +175,7 @@ public class AppointmentService {
 //    - It should be annotated with `@Transactional` to ensure the operation is executed in a single transaction.
 //    - Instruction: Add `@Transactional` before this method to ensure atomicity when updating appointment status.
     @Transactional
-    public void changeStatus(Long appointmentId, String newStatus) {
+    public void changeStatus(Long appointmentId, int newStatus) {
         // Find the appointment by ID
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));

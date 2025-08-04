@@ -56,8 +56,8 @@ public class Appointment {
 //      - The @NotNull annotation ensures that an appointment must be associated with a doctor when created.
 
     @ManyToOne
-    //@JoinColumn(name = "doctor_id")
-    //@JsonManagedReference
+    @JoinColumn(name = "doctor_id")
+    @JsonManagedReference
     @NotNull(message = "Doctor cannot be null")
     private Doctor doctor;
 
@@ -69,8 +69,8 @@ public class Appointment {
 //      - The @NotNull annotation ensures that an appointment must be associated with a patient when created.
 
     @ManyToOne
-    //@JoinColumn(name = "patient_id")
-    //@JsonManagedReference
+    @JoinColumn(name = "patient_id")
+    @JsonManagedReference
     @NotNull
     private Patient patient;
 
@@ -82,7 +82,7 @@ public class Appointment {
 //      - It uses LocalDateTime, which includes both the date and time for the appointment.
 
     @Future(message = "Appointment time must be in the future")    
-    private LocalDateTime appointmenTime;
+    private LocalDateTime appointmentTime;
     private LocalDateTime dateTime;
 
 // 5. 'status' field:
@@ -105,7 +105,7 @@ public class Appointment {
     
     @Transient
     private LocalDateTime getEndTime() {
-        return appointmenTime.plusHours(1);
+        return appointmentTime.plusHours(1);
     }
 
 // 7. 'getAppointmentDate' method:
@@ -116,7 +116,7 @@ public class Appointment {
 
     @Transient
     private LocalDate getAppointmentDate() {
-       return appointmenTime.toLocalDate(); 
+       return appointmentTime.toLocalDate(); 
     }
 
 
@@ -127,17 +127,17 @@ public class Appointment {
 //      - It returns a LocalTime object representing just the time (without the date) of the scheduled appointment.
     @Transient
     private LocalTime getAppointmentTimeOnly() {
-       return appointmenTime.toLocalTime(); 
+       return appointmentTime.toLocalTime(); 
     }
 // 9. Constructor(s):
 //    - A no-argument constructor is implicitly provided by JPA for entity creation.
 //    - A parameterized constructor can be added as needed to initialize fields.
     public Appointment() {}
 
-    public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmenTime, int status) {
+    public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime, int status) {
         this.doctor = doctor;
         this.patient = patient;
-        this.appointmenTime = appointmenTime;
+        this.appointmentTime = appointmentTime;
         this.status = status;
     }
 // 10. Getters and Setters:
@@ -168,12 +168,12 @@ public class Appointment {
         this.patient = patient;
     }
 
-    public LocalDateTime getAppointmenTime() {
-        return appointmenTime;
+    public LocalDateTime getAppointmentTime() {
+        return appointmentTime;
     }
 
-    public void setAppointmenTime(LocalDateTime appointmenTime) {
-        this.appointmenTime = appointmenTime;
+    public void setAppointmentTime(LocalDateTime appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
     public Integer getStatus() {

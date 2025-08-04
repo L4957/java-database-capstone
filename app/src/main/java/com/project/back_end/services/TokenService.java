@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,6 +33,7 @@ import com.project.back_end.services.TokenService;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
@@ -58,11 +60,11 @@ public class TokenService {
     private final PatientRepository patientRepository;
     private final SecretKey signingKey;
 
-    public TokenService(AdminRepository adminRepository, DoctorRepository doctorRepository, PatientRepository patientRepository, SecretKey secret) {
+    public TokenService(AdminRepository adminRepository, DoctorRepository doctorRepository, PatientRepository patientRepository, String secret) {
         this.adminRepository = adminRepository;
         this.doctorRepository = doctorRepository;
         this.patientRepository = patientRepository;
-        this.signingKey = Keys.hmacShaKeyFor(secret.getBytes());;
+        this.signingKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
 // 3. **getSigningKey Method**
@@ -74,7 +76,7 @@ public class TokenService {
 
     public SecretKey getSigningKey() {
         // Convert the secret string to bytes and generate a SecretKey for HMAC SHA signing
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
     // Other token-related methods...   
@@ -92,9 +94,9 @@ public class TokenService {
         Date expiryDate = new Date(nowMillis + 7 * 24 * 60 * 60 * 1000L);
 
         return Jwts.builder()
-                .setSubject(identifier)          // User's identifier (username or email)
-                .setIssuedAt(now)                // Token issue time
-                .setExpiration(expiryDate)       // Token expiration time
+                .subject(identifier)             // User's identifier (username or email)
+                .issuedAt(now)                // Token issue time
+                .expiration(expiryDate)       // Token expiration time
                 .signWith(signingKey, SignatureAlgorithm.HS256)  // Sign with HMAC SHA256
                 .compact();
     }
@@ -104,7 +106,8 @@ public class TokenService {
 // - After verification, the token is parsed, and the subject (which represents the email) is extracted.
 // This method allows the application to retrieve the user's identity (email) from the token for further use.
     public String extractIdentifier(String token) {
-        Claims claims = Jwts.parserBuilder()
+        
+        Claims claims = Jwts.parser()
                 .setSigningKey(signingKey)
                 .build()
                 .parseClaimsJws(token)
@@ -125,7 +128,7 @@ public class TokenService {
 // This ensures secure access control based on the user's role and their existence in the system.
     public boolean validateToken(String token, String userType) {
         try {
-            Claims claims = Jwts.parserBuilder()
+            Claims claims = Jwts.parser()
                     .setSigningKey(signingKey)
                     .build()
                     .parseClaimsJws(token)
@@ -138,7 +141,7 @@ public class TokenService {
 
             switch (userType.toLowerCase()) {
                 case "admin":
-                    return adminRepository.findByUsername(email).isPresent();
+                    return adminRepository.findByUsername(email) != null;
 
                 case "doctor":
                     return doctorRepository.findByEmail(email) != null;

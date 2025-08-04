@@ -111,7 +111,7 @@ public class Service {
 // This flexible filtering mechanism allows the frontend or consumers of the API to search and narrow down doctors based on user criteria.
     public Map<String, Object> filterDoctor(String name, String specialty, String time) {
         // Delegate filtering to doctorService method that handles all three criteria
-        return doctorService.filterDoctorsByNameSpecialtyandTime(name, specialty, time);
+        return doctorService.filterDoctorsByNameSpecialtyAndTime(name, specialty, time);
     }
 // 6. **validateAppointment Method**
 // This method validates if the requested appointment time for a doctor is available.
@@ -210,7 +210,7 @@ public class Service {
         Map<String, Object> response = new HashMap<>();
 
         // Extract patient email from token
-        String email = tokenService.extractEmail(token);
+        String email = tokenService.extractIdentifier(token);
         if (email == null || email.isEmpty()) {
             response.put("message", "Invalid token");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import com.project.back_end.models.Appointment;
+
 public class AppointmentDTO {
 // 1. 'id' field:
 //    - Type: private Long
@@ -96,7 +98,12 @@ public class AppointmentDTO {
 // 14. Constructor:
 //    - The constructor accepts all the relevant fields for the AppointmentDTO, including simplified fields for the doctor and patient (ID, name, etc.).
 //    - It also calculates custom fields: 'appointmentDate', 'appointmentTimeOnly', and 'endTime' based on the 'appointmentTime' field.
-    public AppointmentDTO(Long id, Long doctorId, String doctorName, Long patientId, String patientName, String patientEmail, String patientPhone, String patientAddress, LocalDateTime appointmentTime, int status) {
+    public AppointmentDTO(
+        Long id, Long doctorId, String doctorName, 
+        Long patientId, String patientName, String patientEmail, 
+        String patientPhone, String patientAddress, LocalDateTime appointmentTime, 
+        int status, LocalDate appointmentDate, LocalTime appointmentTimeOnlyLocalTime,
+        LocalDateTime endTime) {
         this.id = id;
         this.doctorId = doctorId;
         this.doctorName = doctorName;
@@ -114,7 +121,7 @@ public class AppointmentDTO {
         this.endTime = appointmentTime.plusHours(1);
     }
 
-
+    
 // 15. Getters:
 //    - Standard getter methods are provided for all fields: id, doctorId, doctorName, patientId, patientName, patientEmail, patientPhone, patientAddress, appointmentTime, status, appointmentDate, appointmentTimeOnly, and endTime.
 //    - These methods allow access to the values of the fields in the AppointmentDTO object.
@@ -181,4 +188,6 @@ public class AppointmentDTO {
     public LocalDateTime getEndTime() {
         return endTime;
     }
+
+
 }

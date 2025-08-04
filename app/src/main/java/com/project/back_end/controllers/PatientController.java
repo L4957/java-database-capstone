@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.back_end.DTO.AppointmentDTO;
 import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Patient;
 import com.project.back_end.services.PatientService;
 import com.project.back_end.services.Service;
+import com.project.back_end.services.TokenService;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -108,6 +110,30 @@ public class PatientController {
 //    - Requires the patient ID, token, and user role as path variables.
 //    - Validates the token using the shared service.
 //    - If valid, retrieves the patient's appointment data from `PatientService`; otherwise, returns a validation error.
+    @GetMapping("/{id}/{token}/{role}")
+    public ResponseEntity<Map<String, Object>> getPatientAppointment(
+                                                    @PathVariable Long id,
+                                                    @PathVariable String token,
+                                                    @PathVariable String role) {
+
+    Map<String, Object> response = new HashMap<>();
+
+    // Validate the token and role using shared service
+    boolean isValid = service.validateToken(token, role);
+    if (!isValid) {
+        response.put("message", "Invalid token or unauthorized access");
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    // If valid, get patient's appointments from PatientService
+    List<AppointmentDTO> appointments = patientService.getPatientAppointment(id, token);
+
+    response.put("appointments", appointments);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+ }
+
+    /* 
+    // LM previous attempt
     @GetMapping("/{id}/{token}")
     public ResponseEntity<?> getPatientAppointments(@PathVariable Long id,
                                                     @PathVariable String token) {
@@ -122,6 +148,8 @@ public class PatientController {
 
         return appointmentsResponse;
     }
+    // end LM previous attempt
+    */
 
 // 7. Define the `filterPatientAppointment` Method:
 //    - Handles HTTP GET requests to filter a patient's appointments based on specific conditions.

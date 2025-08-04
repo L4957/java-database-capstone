@@ -31,7 +31,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 // Example: public Admin findByUsername(String username);
 
 // Custom query method to find an Admin by username
-    Admin findByUsername(String username);
+    public Admin findByUsername(String username);
 
 // 3. Add @Repository annotation:
 //    - The @Repository annotation marks this interface as a Spring Data JPA repository.

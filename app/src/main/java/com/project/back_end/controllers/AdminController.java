@@ -28,7 +28,7 @@ public class AdminController {
 //    - This promotes cleaner code and separation of concerns between the controller and business logic layer.
     private final Service service;
 
-    @Autowired
+    // @Autowired - commented out as not necessary
     public AdminController(Service service) {
         this.service = service;
     }

@@ -71,7 +71,55 @@ public class AppointmentService {
 //    - If the update is successful, it saves the appointment; otherwise, it returns an appropriate error message.
 //    - Instruction: Ensure proper validation and error handling is included for appointment updates.
     @Transactional
-        public void updateAppointment(Appointment appointment) {
+     
+    public boolean updateAppointment(Appointment appointment) {
+    Optional<Appointment> existingAppointmentOpt = appointmentRepository.findById(appointment.getId());
+
+     // 5.1. Check if the appointment exists by ID
+        if (!existingAppointmentOpt.isPresent()) {
+            // throw new IllegalArgumentException("Appointment not found");
+            return false;
+        }
+        Appointment existingAppointment = existingAppointmentOpt.get();
+
+        // 5.2. Validate patient ID matches the existing appointment
+        if (!existingAppointment.getPatient().getId().equals(appointment.getPatient().getId())) {
+            // throw new IllegalArgumentException("Patient ID does not match the existing appointment");
+            return false;
+        }
+
+        // 5.3. Check if the doctor exists
+        if (!doctorRepository.existsById(appointment.getDoctor().getId())) {
+            //throw new IllegalArgumentException("Doctor does not exist");
+            return false;
+        }
+
+        // 5.4. Validate doctor availability at the appointment time
+        boolean isDoctorAvailable = checkDoctorAvailability(appointment.getDoctor().getId(), appointment.getDateTime(), appointment.getId());
+        if (!isDoctorAvailable) {
+            //throw new IllegalArgumentException("Doctor is not available at the specified time");
+            return false;
+        }
+
+        // 5.5. If all validations pass, update the appointment details
+        existingAppointment.setDateTime(appointment.getDateTime());
+        // existingAppointment.setReason(appointment.getReason());
+        existingAppointment.setDoctor(appointment.getDoctor());
+        existingAppointment.setPatient(appointment.getPatient());
+        existingAppointment.setStatus(appointment.getStatus()); // e.g., confirmed, canceled, etc.
+        // existingAppointment.setLocation(appointment.getLocation()); // if applicable
+        // existingAppointment.setNotes(appointment.getNotes()); // any additional notes
+        // Add other fields as needed
+
+        // 5.6. Save the updated appointment
+        appointmentRepository.save(existingAppointment);
+    
+        return true;
+    }    
+    
+    /*
+    // LM firts version
+    public void updateAppointment(Appointment appointment) {
         // 5.1. Check if the appointment exists by ID
         Optional<Appointment> existingAppointmentOpt = appointmentRepository.findById(appointment.getId());
         if (!existingAppointmentOpt.isPresent()) {
@@ -108,6 +156,9 @@ public class AppointmentService {
         // 5.6. Save the updated appointment
         appointmentRepository.save(existingAppointment);
     }
+    // end of LM first version
+    */
+
 // 6. **Cancel Appointment Method**:
 //    - This method cancels an appointment by deleting it from the database.
 //    - It ensures the patient who owns the appointment is trying to cancel it and handles possible errors.

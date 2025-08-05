@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Appointment;
@@ -61,6 +63,47 @@ public class DoctorService {
 //    - Retrieves the available time slots for a specific doctor on a particular date and filters out already booked slots.
 //    - The method fetches all appointments for the doctor on the given date and calculates the availability by comparing against booked slots.
 //    - Instruction: Ensure that the time slots are properly formatted and the available slots are correctly filtered.
+    
+    public Map<String, Object> getDoctorAvailability(Long doctorId, LocalDate date) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Fetch all appointments for the doctor on the given date
+            List<Appointment> appointments = appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
+                doctorId,
+                date.atStartOfDay(),
+                date.plusDays(1).atStartOfDay()
+            );
+
+            // Prepare a list or other structure representing available time slots
+            List<String> availableSlots = calculateAvailableSlots(appointments);
+
+            response.put("availableSlots", availableSlots);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Failed to fetch availability: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    // Helper method to calculate available time slots based on existing appointments
+    private List<String> calculateAvailableSlots(List<Appointment> appointments) {
+        // Example logic: define all possible slots and remove those booked
+        List<String> allSlots = Arrays.asList("09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM");
+        Set<String> bookedSlots = appointments.stream()
+            .map(appointment -> appointment.getAppointmentTime().toLocalTime().toString()) // adjust format as needed
+            .collect(Collectors.toSet());
+
+        return allSlots.stream()
+            .filter(slot -> !bookedSlots.contains(slot))
+            .collect(Collectors.toList());
+    }
+
+
+    /*
+    // LM test: first version returning a List instead of a Map
     public List<String> getDoctorAvailability(Long doctorId, LocalDate date) {
         // Define all possible time slots (example: every hour from 9 AM to 5 PM)
         List<String> allSlots = new ArrayList<>();
@@ -92,6 +135,9 @@ public class DoctorService {
 
         return availableSlots;
     }
+    // end of LM test
+    */
+
 // 5. **saveDoctor Method**:
 //    - Used to save a new doctor record in the database after checking if a doctor with the same email already exists.
 //    - If a doctor with the same email is found, it returns `-1` to indicate conflict; `1` for success, and `0` for internal errors.
@@ -134,6 +180,7 @@ public class DoctorService {
 //    - Fetches all doctors from the database. It is marked with `@Transactional` to ensure that the collection is properly loaded.
 //    - Instruction: Ensure that the collection is eagerly loaded, especially if dealing with lazy-loaded relationships (e.g., available times). 
     // Method to retrieve all doctors
+    @Transactional
     public List<Doctor> getDoctors() {
         return doctorRepository.findAll();
     }

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.project.back_end.DTO.AppointmentDTO;
@@ -122,7 +123,44 @@ public class Service {
 // - If no matching time slot is found, it returns 0 (invalid).
 // - If the doctor doesn’t exist, it returns -1.
 // This logic prevents overlapping or invalid appointment bookings.
+    
     public int validateAppointment(Appointment appointment) {
+        // Find the doctor by ID
+        Optional<Doctor> doctorOpt = doctorRepository.findById(appointment.getDoctor().getId());
+        if (!doctorOpt.isPresent()) {
+            return -1;  // Doctor doesn't exist
+        }
+
+        Doctor doctor = doctorOpt.get();
+
+        // Extract the appointment date (assuming appointmentTime is LocalDateTime)
+        LocalDate appointmentDate = appointment.getAppointmentTime().toLocalDate();
+
+        // Get available time slots for the doctor on the appointment date
+        Map<String, Object> availability = doctorService.getDoctorAvailability(doctor.getId(), appointmentDate);
+
+        // The availability map should contain a list of available slots under key "availableSlots" (adjust key if different)
+        @SuppressWarnings("unchecked")
+        List<String> availableSlots = (List<String>) availability.get("availableSlots");
+
+        if (availableSlots == null || availableSlots.isEmpty()) {
+            return 0;  // No available slots, so invalid appointment time
+        }
+
+        // Format the appointment time to match the slot format, e.g., "09:00 AM"
+        String requestedTimeSlot = appointment.getAppointmentTime().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
+
+        // Check if the requested appointment time matches any available slot
+        boolean isValid = availableSlots.stream()
+            .anyMatch(slot -> slot.equalsIgnoreCase(requestedTimeSlot));
+
+        return isValid ? 1 : 0;
+    }
+
+
+/*
+// LM test - first version
+public int validateAppointment(Appointment appointment) {
         // Find the doctor by ID
         Optional<Doctor> doctorOpt = doctorRepository.findById(appointment.getDoctor().getId());
         if (!doctorOpt.isPresent()) {
@@ -142,6 +180,9 @@ public class Service {
             return 0;  // Time is unavailable
         }
     }
+// end LM test
+*/
+
 // 7. **validatePatient Method**
 // This method checks whether a patient with the same email or phone number already exists in the system.
 // - If a match is found, it returns false (indicating the patient is not valid for new registration).

@@ -48,7 +48,7 @@ public class DoctorController {
     private final Service service;  // For token validation and filtering
 
 
-    @Autowired
+    // @Autowired - commented out as not necessary
     public DoctorController(DoctorService doctorService, Service service) {
         this.doctorService = doctorService;
         this.service = service;
@@ -93,11 +93,15 @@ public class DoctorController {
 //    - Handles HTTP GET requests to retrieve a list of all doctors.
 //    - Returns the list within a response map under the key `"doctors"` with HTTP 200 OK status.
     // Get List of Doctors
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> getDoctors() {
-        Map<String, Object> doctors = doctorService.getDoctors();
-        return new ResponseEntity<>(doctors, HttpStatus.OK);
-    } 
+    @GetMapping("/doctors")
+    public ResponseEntity<Map<String, Object>> getDoctor() {
+        List<Doctor> doctors = doctorService.getDoctors();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("doctors", doctors);
+
+    return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 // 5. Define the `saveDoctor` Method:
 //    - Handles HTTP POST requests to register a new doctor.

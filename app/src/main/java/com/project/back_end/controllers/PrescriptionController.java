@@ -32,7 +32,7 @@ public class PrescriptionController {
     private final PrescriptionService prescriptionService;
     private final Service service;  // For token validation and common functionality
 
-    @Autowired
+    // @Autowired - commented out as not necessary
     public PrescriptionController(PrescriptionService prescriptionService, Service service) {
         this.prescriptionService = prescriptionService;
         this.service = service;

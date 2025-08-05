@@ -3,6 +3,8 @@ package com.project.back_end.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,6 +73,32 @@ public class PrescriptionService {
 //    - If a prescription is found, it returns it within a map wrapped in a `200 OK` status.
 //    - If there is an error while fetching the prescription, it logs the error and returns a `500 Internal Server Error` status with an error message.
 //    - Instruction: Ensure that this method handles edge cases, such as no prescriptions found for the given appointment, by returning meaningful responses.
+    @GetMapping("/prescription/{appointmentId}")
+    public ResponseEntity<Map<String, Object>> getPrescription(@PathVariable Long appointmentId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<Prescription> prescriptions = prescriptionRepository.findByAppointmentId(appointmentId);
+
+            if (prescriptions == null || prescriptions.isEmpty()) {
+                response.put("message", "No prescription found for appointment ID: " + appointmentId);
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            } else {
+                // Return the list or the first prescription as needed
+                response.put("prescriptions", prescriptions);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            // Log the error (replace with your logging framework)
+            System.err.println("Error fetching prescription: " + e.getMessage());
+
+            response.put("message", "An error occurred while fetching the prescription.");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    /*
+    // LM test - previous version of the task
     public ResponseEntity<Map<String, Object>> getPrescription(Long appointmentId) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -88,6 +116,9 @@ public class PrescriptionService {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);  // 500 Internal Server Error
         }
     }
+    // end of LM test
+    */
+
 // 5. **Exception Handling and Error Responses**:
 //    - Both methods (`savePrescription` and `getPrescription`) contain try-catch blocks to handle exceptions that may occur during database interaction.
 //    - If an error occurs, the method logs the error and returns an HTTP `500 Internal Server Error` response with a corresponding error message.

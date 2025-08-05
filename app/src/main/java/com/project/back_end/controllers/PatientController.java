@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.back_end.DTO.AppointmentDTO;
 import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Patient;
+import com.project.back_end.models.Doctor;
 import com.project.back_end.services.PatientService;
-import com.project.back_end.services.Service;
 import com.project.back_end.services.TokenService;
+import com.project.back_end.services.Service;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -39,12 +40,16 @@ public class PatientController {
 //    - Inject the shared `Service` class for tasks like token validation and login authentication.
     private final PatientService patientService;
     private final Service service;  // For token validation and common functionality
+    private final TokenService tokenService;
 
-    @Autowired
-    public PatientController(PatientService patientService, Service service) {
+    // @Autowired - commented out as not necessary
+    public PatientController(PatientService patientService, Service service, TokenService tokenService) {
         this.patientService = patientService;
         this.service = service;
+        this.tokenService = tokenService;
     }
+
+     
 
 // 3. Define the `getPatient` Method:
 //    - Handles HTTP GET requests to retrieve patient details using a token.
@@ -118,21 +123,21 @@ public class PatientController {
                                                     @PathVariable String token,
                                                     @PathVariable String role) {
 
-    Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
-    // Validate the token and role using shared service
-    boolean isValid = service.validateToken(token, role);
-    if (!isValid) {
-        response.put("message", "Invalid token or unauthorized access");
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        // Validate the token and role using shared service
+        boolean isValid = tokenService.validateToken(token, role);
+        if (!isValid) {
+            response.put("message", "Invalid token or unauthorized access");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+        // If valid, get patient's appointments from PatientService
+        List<AppointmentDTO> appointments = patientService.getPatientAppointment(id, token);
+
+        response.put("appointments", appointments);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    // If valid, get patient's appointments from PatientService
-    List<AppointmentDTO> appointments = patientService.getPatientAppointment(id, token);
-
-    response.put("appointments", appointments);
-    return new ResponseEntity<>(response, HttpStatus.OK);
- }
 
     /* 
     // LM previous attempt

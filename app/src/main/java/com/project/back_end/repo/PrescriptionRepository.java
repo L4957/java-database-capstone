@@ -21,7 +21,6 @@ public interface PrescriptionRepository extends MongoRepository<Prescription, St
 //      - Return type: List<Prescription>
 //      - Parameters: Long appointmentId
 //      - MongoRepository automatically derives the query from the method name, in this case, it will find prescriptions by the appointment ID.
-    List<Prescription> findAppointmentById(Long appointmentId);
-
+    List<Prescription> findByAppointmentId(Long appointmentId);
 }
 

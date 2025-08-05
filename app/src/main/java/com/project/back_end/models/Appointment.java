@@ -134,7 +134,8 @@ public class Appointment {
 //    - A parameterized constructor can be added as needed to initialize fields.
     public Appointment() {}
 
-    public Appointment(Doctor doctor, Patient patient, LocalDateTime appointmentTime, int status) {
+    public Appointment(Long id, Doctor doctor, Patient patient, LocalDateTime appointmentTime, int status) {
+        this.id = id;
         this.doctor = doctor;
         this.patient = patient;
         this.appointmentTime = appointmentTime;

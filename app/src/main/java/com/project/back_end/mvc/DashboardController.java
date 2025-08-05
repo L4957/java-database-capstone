@@ -1,11 +1,27 @@
 package com.project.back_end.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.stereotype.Service;
+
+import com.project.back_end.models.Admin;
+import com.project.back_end.services.Service;
+
+import com.project.back_end.services.AppointmentService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
+import com.project.back_end.services.TokenService;
+
 
 
 // 1. Set Up the MVC Controller Class:
@@ -28,8 +44,22 @@ public class DashboardController {
 //    - Validates the token using the shared service for the `"admin"` role.
 //    - If the token is valid (i.e., no errors returned), forwards the user to the `"admin/adminDashboard"` view.
 //    - If invalid, redirects to the root URL, likely the login or home page.
+    @GetMapping("/adminDashboard/{token}")
+    public String adminDashboard(@PathVariable String token) {
+        ResponseEntity<Map<String, String>> validationResponse = service.validateToken(token, "admin");
 
+        if (validationResponse.getStatusCode() == HttpStatus.OK && 
+            (validationResponse.getBody() == null || validationResponse.getBody().isEmpty())) {
+            // Token is valid, forward to admin dashboard view
+            return "admin/adminDashboard";
+        } else {
+            // Token invalid or error present, redirect to root URL
+            return "redirect:/";
+        }
+    }
     
+    /*
+    // LM first attempt, replaced by the one above
     @GetMapping("/adminDashboard/{token}")
     public String adminDashboard(@PathVariable String token) {
         // Validate token for admin role
@@ -39,7 +69,8 @@ public class DashboardController {
             return "redirect:/";  // Redirect to login page
         }
     }
-    
+    // LM end of first attempt
+    */
 
 // 4. Define the `doctorDashboard` Method:
 //    - Handles HTTP GET requests to `/doctorDashboard/{token}`.
@@ -50,12 +81,14 @@ public class DashboardController {
 
     @GetMapping("/doctorDashboard/{token}")
     public String doctorDashboard(@PathVariable String token) {
-        // Validate token for doctor role
-            if (service.validateToken(token, "doctor").isEmpty()) {
-                return "doctor/doctorDashboard";  // Return Thymeleaf template view
-            } else {
-                return "redirect:/";  // Redirect to login page
-            }
+         ResponseEntity<Map<String, String>> validationResponse = service.validateToken(token, "doctor");
+        if (validationResponse.getStatusCode() == HttpStatus.OK && 
+            (validationResponse.getBody() == null || validationResponse.getBody().isEmpty())) {
+            // Token is valid, forward to doctor dashboard view
+            return "doctordoctorDashboard";
+        } else {
+            // Token invalid or error present, redirect to root URL
+            return "redirect:/";
+        }
     }
-
 }

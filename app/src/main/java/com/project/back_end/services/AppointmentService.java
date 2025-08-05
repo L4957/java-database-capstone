@@ -15,6 +15,7 @@ import java.util.List;
 
 
 import com.project.back_end.models.Appointment;
+import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
@@ -197,9 +198,10 @@ public class AppointmentService {
 
 // Helper method to extract doctor ID from token (implementation depends on your tokenService)
     private Long getDoctorIdFromToken(String token) {
-        // Example: parse token to get doctor ID
-        return tokenService.getUserIdFromToken(token);
+        String doctorIdentifier = tokenService.extractIdentifier(token);
+        Doctor doctor = doctorRepository.findByEmail(doctorIdentifier);
+        return (doctor != null) ? doctor.getId() : null;
     }
-// end LM added
 
+// end LM added
 }

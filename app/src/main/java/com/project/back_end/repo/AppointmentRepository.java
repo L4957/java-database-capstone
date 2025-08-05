@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import com.project.back_end.models.Appointment;
+import com.project.back_end.DTO.AppointmentDTO;
 import com.project.back_end.models.Admin;
 import com.project.back_end.models.Doctor;
 import org.springframework.data.repository.query.Param;
@@ -88,6 +89,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     // LM added - findPatientIdandStatus
     List<Appointment> findByPatientIdAndStatus(Long patientId, int status);
 
+   
+    
+
 //    - **findByPatient_IdAndStatusOrderByAppointmentTimeAsc**:
 //      - This method retrieves all appointments for a specific patient with a given status, ordered by the appointment time.
 //      - Return type: List<Appointment>
@@ -95,6 +99,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     // Retrieve appointments for a patient by status, ordered by appointment time ascending
     List<Appointment> findByPatient_IdAndStatusOrderByAppointmentTimeAsc(Long patientId, int status);
+
+
 
 //    - **filterByDoctorNameAndPatientId**:
 //      - This method retrieves appointments based on a doctor’s name (using a LIKE query) and the patient’s ID.
@@ -149,6 +155,18 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByPatientIdAndDoctorNameContainingIgnoreCase(
             @Param("patientId") Long patientId,
             @Param("doctorName") String doctorName);
-
+            
+            
+    // findByPatientIdAndDoctorNameContainingIgnoreCaseAndStatus
+    @Query("SELECT a FROM Appointment a " +
+           "LEFT JOIN FETCH a.patient p " +
+           "LEFT JOIN FETCH a.doctor d " +
+           "WHERE p.id = :patientId " +
+           "AND LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%')) " +
+           "AND a.status = :status")
+    List<Appointment> findByPatientIdAndDoctorNameContainingIgnoreCaseAndStatus(
+            @Param("patientId") Long patientId,
+            @Param("doctorName") String doctorName,
+            @Param("status") int status);
     // end LM added
 }

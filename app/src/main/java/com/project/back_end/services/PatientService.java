@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -91,6 +93,7 @@ public class PatientService {
         return appointmentDTOs;
     }
 
+     
     // Helper method to convert Appointment to AppointmentDTO
     private AppointmentDTO convertToDTO(Appointment appointment) {
         return new AppointmentDTO(
@@ -102,17 +105,27 @@ public class PatientService {
             appointment.getPatient().getEmail(),
             appointment.getPatient().getPhone(),
             appointment.getPatient().getAddress(),
-            appointment.getAppointmentTime(),
-            appointment.getStatus()
+            appointment.getAppointmentTime(),  
+            appointment.getStatus(),
+            appointment.getAppointmentTime().toLocalDate(),
+            appointment.getAppointmentTime().toLocalTime(),
+            appointment.getAppointmentTime().plusHours(1)
         );
     }
+
 // 5. **filterByCondition Method**:
 //    - Filters appointments for a patient based on the condition (e.g., "past" or "future").
 //    - Retrieves appointments with a specific status (0 for future, 1 for past) for the patient.
 //    - Converts the appointments into `AppointmentDTO` and returns them in the response.
 //    - Instruction: Ensure the method correctly handles "past" and "future" conditions, and that invalid conditions are caught and returned as errors.
-    public ResponseEntity<Map<String, Object>> filterByCondition(String condition, Long id) {
+    public ResponseEntity<Map<String, Object>> filterByCondition(String condition, Long patientId) {
         Map<String, Object> response = new HashMap<>();
+
+        // Validate input parameters
+        if (condition == null || patientId == null) {
+            response.put("message", "Condition and patient ID must not be null.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
         int status;
         if ("past".equalsIgnoreCase(condition)) {
@@ -124,30 +137,75 @@ public class PatientService {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        // Fetch appointments by patient ID and status
-        List<AppointmentDTO> filteredAppointments = appointmentRepository.findByPatientIdAndStatus(id, status);
+        // Fetch appointments from repository by patient ID and status
+        List<Appointment> appointments = appointmentRepository.findByPatientIdAndStatus(patientId, status);
 
-        response.put("appointments", filteredAppointments);
+        // Convert Appointment entities to AppointmentDTOs
+        List<AppointmentDTO> appointmentDTOs = appointments.stream()
+            .map(appointment -> new AppointmentDTO(
+                appointment.getId(),
+                appointment.getDoctor().getId(),
+                appointment.getDoctor().getName(),
+                appointment.getPatient().getId(),
+                appointment.getPatient().getName(),
+                appointment.getPatient().getEmail(),
+                appointment.getPatient().getPhone(),
+                appointment.getPatient().getAddress(),
+                appointment.getAppointmentTime(),  
+                appointment.getStatus(),
+                appointment.getAppointmentTime().toLocalDate(),
+                appointment.getAppointmentTime().toLocalTime(),
+                appointment.getAppointmentTime().plusHours(1)
+            ))
+            .collect(Collectors.toList());
+
+        response.put("appointments", appointmentDTOs);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-// 6. **filterByDoctor Method**:
-//    - Filters appointments for a patient based on the doctor's name.
-//    - It retrieves appointments where the doctor’s name matches the given value, and the patient ID matches the provided ID.
-//    - Instruction: Ensure that the method correctly filters by doctor's name and patient ID and handles any errors or invalid cases.
-    public ResponseEntity<Map<String, Object>> filterByDoctor(String name, Long patientId) {
-        Map<String, Object> response = new HashMap<>();
 
-        if (name == null || name.isEmpty()) {
-            response.put("message", "Doctor name must be provided");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
+    // 6. **filterByDoctor Method**:
+    //    - Filters appointments for a patient based on the doctor's name.
+    //    - It retrieves appointments where the doctor’s name matches the given value, and the patient ID matches the provided ID.
+    //    - Instruction: Ensure that the method correctly filters by doctor's name and patient ID and handles any errors or invalid cases.
+    public ResponseEntity<Map<String, Object>> filterByDoctor(String doctorName, Long patientId) {
+    Map<String, Object> response = new HashMap<>();
 
-        // Fetch appointments by patient ID and doctor's name (partial match)
-        List<AppointmentDTO> filteredAppointments = appointmentRepository.findByPatientIdAndDoctorNameContainingIgnoreCase(patientId, name);
-
-        response.put("appointments", filteredAppointments);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    // Validate input parameters
+    if (doctorName == null || doctorName.trim().isEmpty() || patientId == null) {
+        response.put("message", "Doctor name and patient ID must not be null or empty.");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    // Fetch appointments matching doctor name and patient ID
+    List<Appointment> appointments = appointmentRepository.filterByDoctorNameAndPatientId(doctorName, patientId);
+
+    if (appointments.isEmpty()) {
+        response.put("message", "No appointments found for the given doctor and patient.");
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    // Convert Appointment entities to AppointmentDTOs
+    List<AppointmentDTO> appointmentDTOs = appointments.stream()
+        .map(appointment -> new AppointmentDTO(
+            appointment.getId(),
+            appointment.getDoctor().getId(),
+            appointment.getDoctor().getName(),
+            appointment.getPatient().getId(),
+            appointment.getPatient().getName(),
+            appointment.getPatient().getEmail(),
+            appointment.getPatient().getPhone(),
+            appointment.getPatient().getAddress(),
+            appointment.getAppointmentTime(),  
+            appointment.getStatus(),
+            appointment.getAppointmentTime().toLocalDate(),
+            appointment.getAppointmentTime().toLocalTime(),
+            appointment.getAppointmentTime().plusHours(1)
+        ))
+        .collect(Collectors.toList());
+
+    response.put("appointments", appointmentDTOs);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+}
 
 
 // 7. **filterByDoctorAndCondition Method**:
@@ -156,31 +214,55 @@ public class PatientService {
 //    - Converts the appointments into `AppointmentDTO` objects and returns them in the response.
 //    - Instruction: Ensure that the filter handles both doctor name and condition properly, and catches errors for invalid input.
     // Method to filter appointments by doctor's name and appointment condition (past/future)
-    public ResponseEntity<Map<String, Object>> filterByDoctorAndCondition(String condition, String name, long patientId) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> filterByDoctorAndCondition(String condition, String doctorName, Long patientId) {
+    Map<String, Object> response = new HashMap<>();
 
-        int status;
-        if ("past".equalsIgnoreCase(condition)) {
-            status = 1;  // Past appointments
-        } else if ("future".equalsIgnoreCase(condition)) {
-            status = 0;  // Future appointments
-        } else {
-            response.put("message", "Invalid condition. Use 'past' or 'future'.");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-
-        if (name == null || name.isEmpty()) {
-            response.put("message", "Doctor name must be provided");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-
-        // Fetch filtered appointments by patient ID, doctor name, and status
-        List<AppointmentDTO> filteredAppointments = appointmentRepository
-                .findByPatientIdAndDoctorNameContainingIgnoreCaseAndStatus(patientId, name, status);
-
-        response.put("appointments", filteredAppointments);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    // Validate inputs
+    if (condition == null || doctorName == null || doctorName.trim().isEmpty() || patientId == null) {
+        response.put("message", "Condition, doctor name, and patient ID must not be null or empty.");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    int status;
+    if ("past".equalsIgnoreCase(condition)) {
+        status = 1;  // Past appointments
+    } else if ("future".equalsIgnoreCase(condition)) {
+        status = 0;  // Future appointments
+    } else {
+        response.put("message", "Invalid condition. Use 'past' or 'future'.");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // Fetch appointments filtered by doctorName, patientId, and status
+    List<Appointment> appointments = appointmentRepository.findByPatientIdAndDoctorNameContainingIgnoreCaseAndStatus(patientId, doctorName, status);
+
+    if (appointments.isEmpty()) {
+        response.put("message", "No appointments found matching the criteria.");
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    // Convert to AppointmentDTO list
+    List<AppointmentDTO> appointmentDTOs = appointments.stream()
+        .map(appointment -> new AppointmentDTO(
+            appointment.getId(),
+            appointment.getDoctor().getId(),
+            appointment.getDoctor().getName(),
+            appointment.getPatient().getId(),
+            appointment.getPatient().getName(),
+            appointment.getPatient().getEmail(),
+            appointment.getPatient().getPhone(),
+            appointment.getPatient().getAddress(),
+            appointment.getAppointmentTime(),  
+            appointment.getStatus(),
+            appointment.getAppointmentTime().toLocalDate(),
+            appointment.getAppointmentTime().toLocalTime(),
+            appointment.getAppointmentTime().plusHours(1)
+        ))
+        .collect(Collectors.toList());
+
+    response.put("appointments", appointmentDTOs);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+}
 
 // 8. **getPatientDetails Method**:
 //    - Retrieves patient details using the `tokenService` to extract the patient's email from the provided token.
@@ -215,7 +297,6 @@ public class PatientService {
 // 10. **Use of DTOs (Data Transfer Objects)**:
 //    - The service uses `AppointmentDTO` to transfer appointment-related data between layers. This ensures that sensitive or unnecessary data (e.g., password or private patient information) is not exposed in the response.
 //    - Instruction: Ensure that DTOs are used appropriately to limit the exposure of internal data and only send the relevant fields to the client.
-
 
 
 }

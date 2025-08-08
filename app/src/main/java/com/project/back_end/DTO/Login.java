@@ -2,6 +2,52 @@ package com.project.back_end.DTO;
 
 public class Login {
     
+    
+  
+    private String email;  // email for Doctor/Patient, username for Admin
+    private String password;
+
+    // Default constructor
+    public Login() {}
+
+    
+    // Parameterized constructor
+    public Login(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+
+    // Getter and Setter for email
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    // Getter and Setter for password
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // Optional: Override toString() for debugging
+    @Override
+    public String toString() {
+        return "Login{" +
+                "email='" + email + '\'' +
+                ", password='[PROTECTED]'" +
+                '}';
+    }
+  
+
+
+/*
 // LM comment: may need to replace "email" with "identifier"
 // Because The unique identifier of the user attempting to log in 
 // (email for Doctor/Patient, username for Admin)
@@ -51,5 +97,6 @@ public class Login {
     public void setPassword(String password) {
         this.password = password;
     }
+    */
 
 }

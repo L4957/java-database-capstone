@@ -13,11 +13,10 @@ header.innerHTML = `
 
 // 1. Define the `renderHeader` Function
 export function renderHeader(userRole, token) {
-  userRole = userRole || localStorage.getItem("userRole");  
-  token = token || localStorage.getItem("token")
+  userRole = userRole || localStorage.getItem("userRole");
+  token = token || localStorage.getItem("token");
     // 2. Select the Header Div
-    const headerDiv = document.getElementById("header");
-        
+    const headerDiv = document.getElementById("header");      
     
     // 3. Check if the Current Page is the Root Page
     if (window.location.pathname.endsWith("/")) {
@@ -56,7 +55,7 @@ export function renderHeader(userRole, token) {
 
     // 7. Add Role-Specific Header Content
 
-    let headerContent = "";
+    headerContent = "";
     
     
     if (role === "admin") {

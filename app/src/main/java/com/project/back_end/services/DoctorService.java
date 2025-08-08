@@ -249,7 +249,11 @@ export async function deleteDoctor(doctorId, token) {
 // Method to validate doctor login credentials
     public ResponseEntity<Map<String, String>> validateDoctor(Login login) {
         Map<String, String> response = new HashMap<>();
-
+        
+        System.out.println("testLM XXXXXXX entered in validateDoctor inside DoctorService.java");
+        System.out.println("testLM XXXXXXX login: " + login);
+        System.out.println("testLM XXXXXXX response: " + response);
+        System.out.println("testLM XXXXXXX Login email: " + login.getEmail());
         Doctor doctor = doctorRepository.findByEmail(login.getEmail());
         if (doctor == null) {
             response.put("message", "Doctor not found");

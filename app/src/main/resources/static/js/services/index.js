@@ -1,41 +1,81 @@
 // Import the openModal function to handle showing login popups/modals
 import { openModal } from "../components/modals.js";
 // Import the base API URL from the config file
-import { API_BASE_URL } from "../config/config.js";
+// import { API_BASE_URL } from "../config/config.js";
+import { ADMIN_API  } from "../config/config.js";
+import { DOCTOR_API } from "../config/config.js";
 
-// Define constants for the admin and doctor login API endpoints using the base URL
-const ADMIN_API = API_BASE_URL + '/admin';
-const DOCTOR_API = API_BASE_URL + '/doctor/login';
 
+
+window.addEventListener('load', () => {
+  const adminBtn = document.getElementById('Admin_Button');
+  if (adminBtn) {
+    adminBtn.addEventListener('click', () => {
+      console.log('Admin_Button click is detected inside index.js');
+      openModal('adminLogin');
+    });
+  }
+});
+
+
+window.addEventListener('load', () => {
+  const adminBtn = document.getElementById('Doctor_Button');
+  if (adminBtn) {
+    adminBtn.addEventListener('click', () => {
+      console.log('Doctor_Button click is detected inside index.js');
+      openModal('doctorLogin');
+    });
+  }
+});
+
+/* LM note: using the window.onload worked only for the second button (Doctor_Button), 
+    but not for the first (Admin_Button). The approach above solves for both the buttons.
 window.onload = function () {
-    const adminBtn = document.getElementById('adminLogin');
+    const adminBtn = document.getElementById('Admin_Button');
     if (adminBtn) {
         adminBtn.addEventListener('click', () => {
-            openModal('adminLogin');
+          console.log('Admin_Button click is detected inside index.js');
+          openModal('adminLogin');
         });
-    }     
-}
-
-window.onload = function () {
-    const doctorBtn = document.getElementById('doctorLogin');
-    if (doctorBtn) {
-        doctorBtn.addEventListener('click', () => {
-            openModal('doctorLogin');
-            });
     }
 }
 
+window.onload = function () {
+    const doctorBtn = document.getElementById('Doctor_Button');
+    if (doctorBtn) {
+        doctorBtn.addEventListener('click', () => { 
+          console.log('Doctor_Button click is detected inside index.js');
+          openModal('doctorLogin');
+        });
+    }
+}
+
+*/
+
+
 // Define a function named adminLoginHandler on the global window object
 // This function will be triggered when the admin submits their login credentials
+
+/*
 export async function adminLoginHandler(username, password) {
   try {
+    
+    console.log("XXXXX Username: ", username);
+    console.log("XXXXX Password: ", password);
+    
     const admin = { username, password };
-    const response = await fetch(`${ADMIN_API}`, {
+    console.log("XXXXX admin", admin);
+    
+    const response = await fetch("http://localhost:8080/admin/login", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(admin)
-    });
+    
+      });
+    console.log("XXXXX response: ", response);  
     const result = await response.json();
+    console.log("XXXXX response result: ", result);
+    
     if (!response.ok) {
       throw new Error(result.message);
     }
@@ -46,13 +86,15 @@ export async function adminLoginHandler(username, password) {
         return { success: false, message: error.message }
   }
 }
+*/  
 
 // Define a function named doctorLoginHandler on the global window object
 // This function will be triggered when a doctor submits their login credentials
+/*
 export async function doctorLoginHandler(username, password) {
-  try {
+  try {  
         const doctor = { username, password };
-        const response = await fetch(`${DOCTOR_API}`, {
+        const response = await fetch(DOCTOR_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(doctor)
@@ -67,9 +109,31 @@ export async function doctorLoginHandler(username, password) {
             console.error("Error :: doctorLoginHandler :: ", error)
             return { success: false, message: error.message }
     }
+}            
+*/
+/*
+export async function doctorLoginHandler(username, password) {
+  
+  const doctor = { email: username, password };  // map username to email  
+  
+  try {  
+        const response = await fetch(DOCTOR_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(doctor)
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message);
+      }
+      return { success: response.ok, message: result.message }
+  }
+  catch (error) {
+      console.error("Error :: doctorLoginHandler :: ", error)
+      return { success: false, message: error.message }
+  }
 }
-
-
+*/
 
      
 

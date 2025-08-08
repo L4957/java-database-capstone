@@ -38,12 +38,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //      - Parameters: Long doctorId, LocalDateTime start, LocalDateTime end
 //      - It uses a LEFT JOIN to fetch the doctor’s available times along with the appointments.
 
-    @Query("SELECT a FROM Appointment a LEFT JOIN FETCH a.doctor d LEFT JOIN FETCH a.availability av " +
-           "WHERE d.id = :doctorId AND a.appointmentTime BETWEEN :start AND :end")
-    List<Appointment> findByDoctorIdAndAppointmentTimeBetween(
-            @Param("doctorId") Long doctorId,
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end);
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId AND a.appointmentTime BETWEEN :start AND :end")
+    List<Appointment> findByDoctorIdAndAppointmentTimeBetween(@Param("doctorId") Long doctorId,
+                                                             @Param("start") LocalDateTime start,
+                                                             @Param("end") LocalDateTime end);
 
 
 //    - **findByDoctorIdAndPatient_NameContainingIgnoreCaseAndAppointmentTimeBetween**:

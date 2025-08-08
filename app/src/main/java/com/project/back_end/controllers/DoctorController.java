@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("${api.path}doctor")
+@RequestMapping("/doctor")
 public class DoctorController {
 
  
@@ -139,6 +139,9 @@ public class DoctorController {
     // Doctor Login
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> doctorLogin(@RequestBody Login login) {
+        System.out.println("testLM XXXXXXX - inside doctorLogin in DoctorController.java");
+        System.out.println("testLM XXXXXXX login: " + login);
+        System.out.println("testLM XXXXXXX" + doctorService.validateDoctor(login));
         return doctorService.validateDoctor(login);
     }
 

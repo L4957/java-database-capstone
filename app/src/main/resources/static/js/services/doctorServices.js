@@ -1,17 +1,20 @@
 // Import the base API URL from the config file
 // Define a constant DOCTOR_API to hold the full endpoint for doctor-related actions
 
-import { API_BASE_URL } from "../config/config.js";
-const DOCTOR_API = API_BASE_URL + '/doctor'
+// import { API_BASE_URL } from "../config/config.js";
+import { DOCTOR_API } from "../config/config.js";
+// const DOCTOR_API = API_BASE_URL + '/doctor'
 
 
 export async function getDoctors() {
     try {
-          const response = await fetch(`${DOCTOR_API}`, {
+          const response = await fetch(`${DOCTOR_API}/doctors`, {
               method: 'GET',
               headers: { 'Content-Type': 'application/json' }
           });
+          console.log("XXXXX response from getDoctors() in doctorServices.js: ", response); 
           const result = await response.json();
+          console.log("XXXXX results from getDoctors() in doctorServices.js: ", result);  
           if (!response.ok) {
             throw new Error(result.message);
           }
@@ -104,7 +107,9 @@ export async function filterDoctors(name ,time ,specialty) {
               method: 'GET',
               headers: { 'Content-Type': 'application/json' }
           });
+          console.log("XXXXX response from filterDoctors() in doctorServices.js: ", response); 
           const result = await response.json();
+          console.log("XXXXX result from filterDoctors() in doctorServices.js: ", result); 
           if (!response.ok) {
             throw new Error(result.message);
           }

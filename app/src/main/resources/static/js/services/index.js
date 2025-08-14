@@ -1,9 +1,11 @@
 // Import the openModal function to handle showing login popups/modals
 import { openModal } from "../components/modals.js";
+import { selectRole } from '../render.js';
 // Import the base API URL from the config file
 // import { API_BASE_URL } from "../config/config.js";
 import { ADMIN_API  } from "../config/config.js";
 import { DOCTOR_API } from "../config/config.js";
+import { PATIENT_API } from "../config/config.js";
 
 
 
@@ -24,6 +26,17 @@ window.addEventListener('load', () => {
     adminBtn.addEventListener('click', () => {
       console.log('Doctor_Button click is detected inside index.js');
       openModal('doctorLogin');
+    });
+  }
+});
+
+
+window.addEventListener('load', () => {
+  const adminBtn = document.getElementById('Patient_Button');
+  if (adminBtn) {
+    adminBtn.addEventListener('click', () => {
+      console.log('Patient_Button click is detected inside index.js');
+      openModal('patientLogin');
     });
   }
 });
@@ -56,17 +69,17 @@ window.onload = function () {
 // Define a function named adminLoginHandler on the global window object
 // This function will be triggered when the admin submits their login credentials
 
-/*
-export async function adminLoginHandler(username, password) {
+
+export async function adminLoginHandler(email, password) {
   try {
     
-    console.log("XXXXX Username: ", username);
+    console.log("XXXXX Username: ", email);
     console.log("XXXXX Password: ", password);
     
-    const admin = { username, password };
+    const admin = { username: email, password };
     console.log("XXXXX admin", admin);
     
-    const response = await fetch("http://localhost:8080/admin/login", {
+    const response = await fetch(`${ADMIN_API}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(admin)
@@ -77,8 +90,16 @@ export async function adminLoginHandler(username, password) {
     console.log("XXXXX response result: ", result);
     
     if (!response.ok) {
+      alert("Invalid username or password. Please try again.");
       throw new Error(result.message);
     }
+    // Store token in localStorage
+    const token = result.token;
+    localStorage.setItem("token", token);
+    console.log("XXXXX check stored token: ", localStorage.getItem("token"));
+
+    // Proceed with admin-specific behavior
+    selectRole("admin");
     return { success: response.ok, message: result.message }
   }
   catch (error) {
@@ -86,23 +107,32 @@ export async function adminLoginHandler(username, password) {
         return { success: false, message: error.message }
   }
 }
-*/  
+  
 
 // Define a function named doctorLoginHandler on the global window object
 // This function will be triggered when a doctor submits their login credentials
-/*
-export async function doctorLoginHandler(username, password) {
+
+export async function doctorLoginHandler(email, password) {
   try {  
-        const doctor = { username, password };
-        const response = await fetch(DOCTOR_API, {
+        const doctor = { email, password };
+        const response = await fetch(`${DOCTOR_API}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(doctor)
         });
+        console.log("XXXXX response: ", response); 
         const result = await response.json();
+        console.log("XXXXX response result: ", result);
         if (!response.ok) {
+          alert("Invalid username or password. Please try again.");
           throw new Error(result.message);
         }
+        // Store token in localStorage
+        const token = result.token;
+        localStorage.setItem("token", token);
+        console.log("XXXXX check stored token: ", localStorage.getItem("token"));
+        // Proceed with doctor-specific behavior
+        selectRole("doctor");
         return { success: response.ok, message: result.message }
     }
   catch (error) {
@@ -110,7 +140,7 @@ export async function doctorLoginHandler(username, password) {
             return { success: false, message: error.message }
     }
 }            
-*/
+
 /*
 export async function doctorLoginHandler(username, password) {
   
@@ -135,7 +165,35 @@ export async function doctorLoginHandler(username, password) {
 }
 */
 
-     
+// patientLoginHandler - triggered by modals.js
+export async function patientLoginHandler(email, password) {
+  try {  
+        const patient = { email, password };
+        const response = await fetch(`${PATIENT_API}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(patient)
+        });
+        console.log("XXXXX response: ", response); 
+        const result = await response.json();
+        console.log("XXXXX response result: ", result);
+        if (!response.ok) {
+          alert("Invalid username or password. Please try again.");
+          throw new Error(result.message);
+        }
+        // Store token in localStorage
+        const token = result.token;
+        localStorage.setItem("token", token);
+        console.log("XXXXX check stored token: ", localStorage.getItem("token"));
+        // Proceed with admin-specific behavior
+        selectRole("patient");
+        return { success: response.ok, message: result.message }
+    }
+  catch (error) {
+            console.error("Error :: patientLoginHandler :: ", error)
+            return { success: false, message: error.message }
+    }
+}                 
 
 /*
   Import the openModal function to handle showing login popups/modals

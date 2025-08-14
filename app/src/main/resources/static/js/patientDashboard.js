@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 
-function loadDoctorCards() {
+export function loadDoctorCards() {
   getDoctors()
     .then(doctors => {
       const contentDiv = document.getElementById("content");
@@ -55,17 +55,22 @@ function filterDoctorsOnChange() {
   const filterSpecialty = document.getElementById("filterSpecialty").value;
 
 
-  const name = searchBar.length > 0 ? searchBar : null;
+  const name = searchBar && searchBar.length > 0 ? searchBar : null;
   const time = filterTime.length > 0 ? filterTime : null;
   const specialty = filterSpecialty.length > 0 ? filterSpecialty : null;
 
   filterDoctors(name, time, specialty)
     .then(response => {
-      const doctors = response.doctors;
+      // If response is an array, use it directly; else use response.doctors
+      const doctors = Array.isArray(response) ? response : response.doctors;
+      console.log("XXXXX response from filterDoctors() - name: ", name);
+      console.log("XXXXX response from filterDoctors() - time: ", time);
+      console.log("XXXXX response from filterDoctors() - specialty: ", specialty);
+      console.log("XXXXX response from filterDoctors(): ", doctors);  
       const contentDiv = document.getElementById("content");
       contentDiv.innerHTML = "";
 
-      if (doctors.length > 0) {
+      if (doctors && doctors.length > 0) {
         console.log(doctors);
         doctors.forEach(doctor => {
           const card = createDoctorCard(doctor);
@@ -134,3 +139,14 @@ window.loginPatient = async function () {
 
 
 }
+
+/*
+document.addEventListener("DOMContentLoaded", () => {
+  loadDoctorCards();
+});
+
+
+window.onload = () => {
+  loadDoctorCards();
+};
+*/

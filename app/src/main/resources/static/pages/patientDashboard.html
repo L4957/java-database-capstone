@@ -9,15 +9,20 @@
     <link rel="stylesheet" href="../assets/css/adminDashboard.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/patientDashboard.css">
-    <script src="../js/render.js" defer></script>
-    <script src="../js/util.js" defer></script>
-    <script src="../js/components/header.js" defer></script>
-    <script src="../js/components/footer.js" defer></script>
+    <script type="module" src="../js/render.js" defer></script>
+    <script type="module" src="../js/util.js" defer></script>
+    <script type="module" src="../js/components/header.js" defer></script>
+    <script type="module" src="../js/components/footer.js" defer></script>
     <script type="module" src="../js/components/modals.js"></script>
+    <script type="module" src="../js/services/doctorServices.js" defer></script>   
+    <script type="module" src="../js/components/doctorCard.js" defer></script> 
+    <script type="module" src="../js/loggedPatient.js" defer></script>    
+    <!-- <script type="module" src="../js/adminDashboard.js" defer></script> -->
+    
+
 </head>
 
-<!-- <body onload="renderContent()"> -->
-<body>
+<body onload="renderContent()">
     <div class="container">
         <div class="wrapper">
             <div id="header"></div>
@@ -48,19 +53,30 @@
                     </select>
                 </div>
                 <div id="content"></div>
+              <button id="DoctorCards_Button" onclick="loadDoctorCards()">Doctor Cards</button>
+    
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="closeModal">&times;</span>
+                    <div id="modal-body"></div>
+                </div>
+            </div>
+                <script type="module" src="../js/patientDashboard.js" defer></script>
+                <script type="module" src="../js/loggedPatient.js" defer></script> 
+                <script type="module" src="../js/services/doctorServices.js" defer></script>   
+                <script type="module" src="../js/components/doctorCard.js" defer></script>             
             </main>
+            <script>
+                window.onload = () => {
+                    doctorServices.getDoctors();
+                    loggedPatient.loadDoctorCards();
+                };
+            </script>
             <div id="footer"></div>
         </div>
     </div>
-    <button id="Doctor_Cards" onclick="loadDoctorCards()">Doctor Cards</button>
-    
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <div id="modal-body"></div>
-        </div>
-    </div>
-    <script type="module" src="../js/patientDashboard.js" defer></script>
+   
+
 </body>
 
 </html>

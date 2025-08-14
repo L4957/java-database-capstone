@@ -13,7 +13,7 @@ import com.project.back_end.services.Service;
 import java.util.Map;
 
 @RestController
-@RequestMapping("${api.path}admin")
+@RequestMapping("admin")
 public class AdminController {
 
 // 1. Set Up the Controller Class:

@@ -1,7 +1,9 @@
 // modals.js
-//import { adminLoginHandler } from "../services/index.js";
-import { DOCTOR_API } from "../config/config.js";
-// import { doctorLoginHandler } from "../services/index.js";
+import { adminLoginHandler } from "../services/index.js";
+import { doctorLoginHandler } from "../services/index.js";
+import { patientLoginHandler } from "../services/index.js";
+// import { DOCTOR_API } from "../config/config.js";
+
 
 
 
@@ -48,7 +50,7 @@ export function openModal(type) {
         <h2>Patient Login</h2>
         <input type="text" id="email" placeholder="Email" class="input-field">
         <input type="password" id="password" placeholder="Password" class="input-field">
-        <button class="dashboard-btn" id="loginBtn">Login</button>
+        <button class="dashboard-btn" id="patientLoginBtn">Login</button>
       `;
   }
   else if (type === "patientSignup") {
@@ -121,7 +123,39 @@ export function openModal(type) {
   }
 
   if (type === "patientLogin") {
-    document.getElementById("loginBtn").addEventListener("click", loginPatient);
+    document.getElementById("patientLoginBtn").addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      console.log("XXXXX Email:", email);
+      console.log("XXXXX Password:", password);
+      const patient = { email, password };  // map username to email
+      console.log("XXXXX Patient:", patient);
+      console.log('Patient login from modals.js in the "patientLoginHandler" section');
+      patientLoginHandler(email, password);
+      /*
+      try {
+        const response = await fetch("http://localhost:8080/patient/login", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(patient)
+        });
+        
+        console.log("XXXXX response: ", response);
+        const result = await response.json();
+        
+        console.log("XXXXX response result: ", result);
+
+        if (!response.ok) {
+          throw new Error(result.message);
+        }
+
+        // handle successful login
+        console.log('Login successful', result);
+      } catch (error) {
+        console.error('Login failed:', error.message);
+      }
+      */
+    });
   }
 
   if (type === 'addDoctor') {
@@ -135,9 +169,11 @@ export function openModal(type) {
       const password = document.getElementById('password').value.trim();
       console.log("XXXXX Email:", email);
       console.log("XXXXX Password:", password);
-      const admin = { email, password };  // map username to email
+      const admin = { username: email, password };  // map username to email
       console.log("XXXXX Admin:", admin);
       console.log('Admin login from modals.js in the "adminLoginHandler" section');
+      adminLoginHandler(email, password);
+      /*
       try {
         const response = await fetch("http://localhost:8080/admin/login", {
           method: 'POST',
@@ -159,10 +195,9 @@ export function openModal(type) {
       } catch (error) {
         console.error('Login failed:', error.message);
       }
+    */   
     });
-
-
-    
+     
   }
 
   if (type === 'doctorLogin') {
@@ -175,6 +210,8 @@ export function openModal(type) {
       const doctor = { email, password };  // map username to email
       console.log("XXXXX Doctor:", doctor);
       console.log('Doctor login from modals.js in the "doctorLoginHandler" section');
+      doctorLoginHandler(email, password);
+      /*
       try {
         const response = await fetch("http://localhost:8080/doctor/login", {
           method: 'POST',
@@ -196,6 +233,7 @@ export function openModal(type) {
       } catch (error) {
         console.error('Login failed:', error.message);
       }
+      */
     });
   }
 }

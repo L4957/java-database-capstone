@@ -4,6 +4,8 @@
 // Import createPatientRow to generate a table row for each patient appointment
 import { getAllAppointments } from './services/appointmentRecordService.js';
 import { createPatientRow } from './components/patientRows.js';
+// import { getToken } from './util.js';  // Utility to get token from localStorage
+
 
 // Get the table body where patient rows will be added
 // Initialize selectedDate with today's date in 'YYYY-MM-DD' format
@@ -13,23 +15,160 @@ import { createPatientRow } from './components/patientRows.js';
 const tableBody = document.getElementById("patientTableBody");
 const token = localStorage.getItem("token");
 
-var selectedDate = new Date();
+// Initialize selectedDate variable globally or within your module
+// Use ISO string date format YYYY-MM-DD
+let selectedDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
 console.log(selectedDate);
 
-let patientName = null;
+// Store current patient name filter
+let currentPatientName = null;
 
+// Event listener for search input changes
+document.getElementById("searchBar").addEventListener("input", async (event) => {
+  currentPatientName = event.target.value.trim() || null;
+  await fetchAndRenderPatients(currentPatientName, selectedDate);
+  // await fetchAndRenderPatients(currentPatientName);
+});
+
+// LM test: first attempt for taking the patient name from searchbar
+/*
 document.getElementById("searchBar").addEventListener("change", patientName);
 
 async function patientName() {
     const searchBarValue = document.getElementById("searchBar").value.trim();
     
-    const patientName = searchBarValue || null;
+    let patientName = searchBarValue || null;
     return patientName;
   }
+*/
+// LM test: end
 
-// Initialize selectedDate variable globally or within your module
-let selectedDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+async function loadAppointments(patientName = null) {
+  const tableBody = document.getElementById('patientTableBody');
+  const token = localStorage.getItem('token');
 
+  if (!token) {
+    alert('You are not authenticated. Please log in.');
+    window.location.href = '/';
+    return;
+  }
+
+  try {
+    // Build query parameters if patientName filter is provided
+    let url = '/appointments';
+    if (patientName) {
+      url += `?name=${encodeURIComponent(patientName)}`;
+    }
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        alert('Session expired. Please log in again.');
+        window.location.href = '/';
+        return;
+      }
+      throw new Error('Failed to load appointments');
+    }
+
+    const appointments = await response.json();
+
+    if (!Array.isArray(appointments) || appointments.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="5">No appointments found</td></tr>';
+      return;
+    }
+
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    // Render each appointment row
+    appointments.forEach(appointment => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${appointment.patientName}</td>
+        <td>${new Date(appointment.date).toLocaleDateString()}</td>
+        <td>${appointment.status}</td>
+        <td><!-- Add action buttons here if needed --></td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error('Error loading appointments:', error);
+    tableBody.innerHTML = '<tr><td colspan="5">Error loading appointments</td></tr>';
+  }
+}
+
+// Example usage: load all appointments on page load
+loadAppointments();
+
+
+
+
+
+
+
+
+
+
+/* LM test rendering directly from here
+// Example function to fetch and render patients using filters
+async function fetchAndRenderPatients(patientName, date) {
+  try {
+    const response = await fetch(`/appointments?name=${encodeURIComponent(patientName || '')}&date=${date}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch patients');
+    }
+
+    const patients = await response.json();
+    renderPatients(patients);
+  } catch (error) {
+    console.error(error);
+    tableBody.innerHTML = '<tr><td colspan="5">Error loading patients</td></tr>';
+  }
+}
+
+// Example function to render patients into the table body
+function renderPatients(patients) {
+  if (!patients.length) {
+    tableBody.innerHTML = '<tr><td colspan="5">No patients found</td></tr>';
+    return;
+  }
+
+  tableBody.innerHTML = ''; // Clear existing rows
+
+  patients.forEach(patient => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${patient.id}</td>
+      <td>${patient.name}</td>
+      <td>${new Date(patient.appointmentDate).toLocaleDateString()}</td>
+      <td>${patient.status}</td>
+      <td><!-- Actions --></td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Initial fetch on page load
+fetchAndRenderPatients(currentPatientName, selectedDate);
+*/
+// LM end test rendering directly from this page
+
+
+
+
+// LM test: first attempt version
+/*
 // Function to load appointments - assumed to be defined elsewhere
 // async function loadAppointments() { ... }
 
@@ -58,15 +197,16 @@ document.getElementById('datePicker').addEventListener('change', (event) => {
 });
 
 async function loadAppointments() {
-  const tableBody = document.getElementById('patientTableBody');
-  const token = localStorage.getItem('token'); // Assuming token is stored here
-  const patientName = null; // Or set if you have a search/filter input
+  tableBody = document.getElementById('patientTableBody');
+  token = localStorage.getItem('token'); // Assuming token is stored here
+  // const patientName = null; // Or set if you have a search/filter input
+  
   // Clear existing table content
   tableBody.innerHTML = '';
 
   try {
     // Fetch appointments for the selected date
-    const appointments = await getAllAppointments(selectedDate, patientName, token);
+    const appointments = await getAllAppointments(selectedDate, currentPatientName, token);
 
     if (!appointments || appointments.length === 0) {
       // No appointments found - show message row
@@ -105,7 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Call loadAppointments() to load today's appointments by default
   loadAppointments();
 });
-
+*/
+// LM test: end of first version
 
 
 /*

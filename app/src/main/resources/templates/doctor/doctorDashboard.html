@@ -8,22 +8,25 @@
         <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
         <link rel="stylesheet" th:href="@{/assets/css/doctorDashboard.css}">
         <link rel="stylesheet" th:href="@{/assets/css/style.css}">
-        <script th:src="@{/js/render.js}" defer></script>
-        <script th:src="@{/js/util.js}" defer></script>
-        <script th:src="@{/js/components/header.js}" defer></script>
-        <script th:src="@{/js/components/footer.js}" defer></script>
-        <script th:src="@{/js/components/doctorDashboard.js}" defer></script>
-        <script type="module" src="../js/services/doctorDashboard.js" defer></script>
+        <script type="module" th:src="@{/js/render.js}" defer></script>
+        <script type="module" th:src="@{/js/util.js}" defer></script>
+        <script type="module" th:src="@{/js/components/header.js}" defer></script>
+        <script type="module" th:src="@{/js/components/footer.js}" defer></script>
+        <script type="module" th:src="@{/js/doctorDashboard.js}" defer></script>
+        <script type="module" th:src="@{/js/services/doctorServices.js}" defer></script>
+                
+        <!-- LM test: removing these 3 lines maybe not needed
         <script type="module" src="../js/components/patientCard.js" defer></script>
         <script type="module" src="../js/components/patientTable.js" defer></script>
         <script type="module" src="../js/components/patientPrescription.js" defer></script>
+        -->
 
     </head>
 
     <body onload="renderContent()">
         <div class="container">
             <div class="wrapper"> 
-                <div id="header">Add Doctor</div>
+                <div id="header">Welcome to Doctor Dashboard</div>
                 <main class="main-content"> 
                     <input type="text" id="searchBar" class="searchBar" placeholder="Search Bar for custom output" />
                     <button id="todayButton" onclick="">Today's Appointments</button>
@@ -55,8 +58,10 @@
             <span id="closeModal" class="close">&times;</span>
             <div id="modal-body"></div>
         </div>
-        <script type="module" src="../js/services/adminDashboard.js" defer></script>
+        <!-- LM test: removing these 2 lines: are them needed with Thymeleaf?
+        <script type="module" src="../js/services/doctorServices.js" defer></script>
         <script type="module" src="../js/components/doctorCard.js" defer></script>  
+        -->
     </body>    
 </html>         
 

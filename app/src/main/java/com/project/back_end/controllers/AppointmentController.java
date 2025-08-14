@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+// @RequestMapping("${api.path}appointments")
 @RestController
-@RequestMapping("${api.path}appointments")
+@RequestMapping("/appointments")
 public class AppointmentController {
 
 // 1. Set Up the Controller Class:

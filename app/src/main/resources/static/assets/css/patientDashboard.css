@@ -136,3 +136,76 @@
       left: 50%;
       top: 110px; 
   }
+
+  .doctor-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #fff;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: Arial, sans-serif;
+}
+
+.doctor-card .doctor-info {
+  font-size: 14px;
+  color: #333;
+}
+
+.doctor-card .doctor-name {
+  font-weight: bold;
+  font-size: 18px;
+  color: #015c5d;
+}
+
+.doctor-card .doctor-specialty {
+  font-style: italic;
+  color: #666;
+}
+
+.doctor-card .card-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.doctor-card button {
+  background-color: #017d7e;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.doctor-card button:hover {
+  background-color: #015c5d;
+}
+
+ #DoctorCards_Button {
+     width: 200px;
+     height: 48px;
+     border: none;
+     padding: 10px 20px;
+     margin-top: 10px;
+     border-radius: 12px;
+     background-color: #015c5d;
+     color: white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+     position: fixed;
+     right: 45%;
+     bottom: 40%;
+  }
+
+  #DoctorCards_Button:hover {
+      background-color: #A62B1F;
+   }
